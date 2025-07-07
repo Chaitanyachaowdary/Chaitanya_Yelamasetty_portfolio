@@ -67,7 +67,7 @@ export const PROJECTS = [
     title: 'Design Declares Clone',
     description: 'Built a fully responsive, pixel-perfect clone of the Design Declares website. Implemented scroll-triggered animations, sticky bottom navigation, and smooth user interactions. Deployed on Vercel.',
     tags: ['React.js', 'Tailwind CSS', 'Vercel'],
-    imageUrl: 'design.png', // Replace with actual image URL
+    imageUrl: 'Design.png', // Replace with actual image URL
     liveUrl: 'https://design-one-gold.vercel.app/',
     repoUrl: 'https://github.com/Chaitanyachaowdary/Design',
   },
