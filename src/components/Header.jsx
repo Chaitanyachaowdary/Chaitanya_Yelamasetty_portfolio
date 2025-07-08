@@ -83,7 +83,7 @@ const Header = () => {
                     Contact Me
                 </a>
                 <a
-                    href="/resume.pdf"
+                    href="/CHAITANYA_Resume-.pdf"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-md transition-colors shadow-md"
