@@ -9,7 +9,7 @@ const SocialLink = ({ href, children }) => (
 );
 
 const Hero = () => {
-    return (
+    return ( 
         <section id="hero" className="min-h-screen flex flex-col justify-center items-start pt-20">
             <div className="max-w-3xl animate-fade-in-up">
                 <p className="text-accent text-lg font-medium mb-2">Hi, my name is</p>
