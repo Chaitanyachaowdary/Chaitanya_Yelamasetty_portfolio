@@ -9,13 +9,13 @@ const About = () => {
             <div className="grid md:grid-cols-5 gap-10 items-center">
                 <div className="md:col-span-3 text-lg text-medium-gray space-y-4">
                     <p>
-                        I am an aspiring Software Developer with a solid understanding of programming fundamentals and a strong grasp of logical reasoning. Currently pursuing my B.Tech, I have hands-on experience in building responsive web applications using Java, Python, and JavaScript.
+                       As an aspiring Full Stack Web Developer, I possess a solid understanding of programming fundamentals and have hands-on experience building responsive web applications using Java, Python, JavaScript, HTML, CSS, and the React framework.
                     </p>
                     <p>
-                        I am excellent at analyzing complex problems and creating efficient, high-quality software solutions. My skill set includes HTML, CSS, and JavaScript, and I am very familiar with the React framework.
+                       I am passionate about crafting efficient, high-quality software solutions and am adept at analyzing and overcoming complex technical challenges.
                     </p>
                     <p>
-                       I am a quick learner, eager to adapt to new technologies and contribute to a dynamic development team. I enjoy applying my problem-solving skills to grow as a software professional and stay updated with industry trends.
+                      A quick and enthusiastic learner, I am always eager to adapt to new technologies and contribute effectively to dynamic development teams, continuously growing as a software professional.
                     </p>
                 </div>
                 <div className="md:col-span-2 relative group w-full max-w-sm mx-auto">
