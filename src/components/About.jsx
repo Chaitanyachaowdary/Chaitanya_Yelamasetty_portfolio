@@ -4,7 +4,7 @@ import React from 'react';
 import Section from './Section';
 
 const About = () => {
-    return (    
+    return (
         <Section id="about" title="About Me">
             <div className="grid md:grid-cols-5 gap-10 items-center">
                 <div className="md:col-span-3 text-lg text-medium-gray space-y-4">
