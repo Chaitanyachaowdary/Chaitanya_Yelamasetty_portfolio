@@ -14,7 +14,7 @@ const Hero = () => {
             <div className="max-w-3xl animate-fade-in-up">
                 <p className="text-accent text-lg font-medium mb-2">Hi, my name is</p>
                 <h1 className="text-5xl md:text-7xl font-extrabold text-light-gray mb-4">Chaitanya Yelamasetty.</h1>
-                <h2 className="text-4xl md:text-6xl font-extrabold text-medium-gray mb-6">Aspiring Full Stack Web Developer.</h2>
+                <h2 className="text-4xl md:text-6xl font-extrabold text-medium-gray mb-6">Aspiring Full Stack Web Developer</h2>
                 <p className="text-medium-gray text-lg max-w-xl mb-8">
                    With a strong foundation in programming fundamentals and a passion for creating intuitive user experiences, I am an aspiring Full Stack Web Developer. My expertise includes building responsive web applications using modern frontend technologies like React.js, HTML5, CSS3, and Tailwind CSS, complemented by backend skills in Java, Python, and JavaScript. I am eager to apply my problem-solving abilities to contribute to innovative projects and grow within a collaborative development environment.
                 <div className="flex items-center space-x-6">
