@@ -23,7 +23,7 @@ const About = () => {
                     <img
                         src="photo.jpg" // REMINDER: Replace with your actual profile image
                         alt="Chaitanya Yelamasetty"
-                        className="relative w-full rounded-lg shadow-xl"
+                        className="relative w-full rounded-lg shadow-xl" 
                     />
                 </div>
             </div>
