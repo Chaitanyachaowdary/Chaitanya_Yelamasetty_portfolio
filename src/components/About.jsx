@@ -8,7 +8,7 @@ const About = () => {
             <div className="grid md:grid-cols-5 gap-10 items-center">
                 <div className="md:col-span-3 text-lg text-medium-gray space-y-4">
                     <p>
-                       As an aspiring Full Stack Web Developer, I possess a solid understanding of programming fundamentals and have hands-on experience building responsive web applications using Java, Python, JavaScript, HTML, CSS, and the React framework.
+                        As an aspiring Full Stack Web Developer, I possess a solid understanding of programming fundamentals and have hands-on experience building responsive web applications using Java, Python, JavaScript, HTML, CSS, and the React framework.
                     </p>
                     <p>
                        I am passionate about crafting efficient, high-quality software solutions and am adept at analyzing and overcoming complex technical challenges.
