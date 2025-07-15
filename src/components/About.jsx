@@ -20,7 +20,7 @@ const About = () => {
                 <div className="md:col-span-2 relative group w-full max-w-sm mx-auto">
                     <div className="absolute -inset-0.5 bg-gradient-to-r from-accent to-blue-500 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
                     <img
-                        src="photo.jpg" // REMINDER: Replace with your actual profile image
+                        src="photo.png" // REMINDER: Replace with your actual profile image
                         alt="Chaitanya Yelamasetty"
                         className="relative w-full rounded-lg shadow-xl" 
                     />
