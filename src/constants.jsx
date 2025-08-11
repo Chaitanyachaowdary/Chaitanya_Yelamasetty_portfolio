@@ -64,6 +64,15 @@ export const SKILLS = [
 
 export const PROJECTS = [
   {
+    title: 'WhatsApp Clone',
+    description: 'Real-time chat app with one-to-one messaging, responsive UI, and persistent storage. Deployed using Vercel for seamless accessibility.',
+    tags: ['React', 'AI', 'Vercel'],
+    imageUrl: 'health.png',
+    liveUrl: 'https://whatsappclone-jet.vercel.app/',
+    repoUrl: 'https://github.com/Chaitanyachaowdary/whatsappclone',
+  },
+
+  {
     title: 'Design Declares Clone',
     description: 'Built a fully responsive, pixel-perfect clone of the Design Declares website. Implemented scroll-triggered animations, sticky bottom navigation, and smooth user interactions. Deployed on Vercel.',
     tags: ['React.js', 'Tailwind CSS', 'Vercel'],
