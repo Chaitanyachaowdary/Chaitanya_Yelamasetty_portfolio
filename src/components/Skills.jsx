@@ -1,15 +1,18 @@
-// src/components/Skills.jsx
-
 import React from "react";
 import Section from "./Section";
-import { SKILLS } from "../constants"; // Corrected import path
+import { SKILLS } from "../constants";
 
 const SkillBadge = ({ skill }) => {
-  const { name, Icon } = skill;
+  const { name, imageUrl } = skill;
   return (
-    <div className="bg-secondary p-4 rounded-lg flex items-center space-x-4 transition-transform duration-300 hover:scale-105 hover:shadow-lg hover:shadow-accent/20">
-      <Icon className="w-8 h-8 text-accent" />
-      <span className="text-light-gray font-medium">{name}</span>
+    <div className="flex items-center space-x-4 p-2 rounded hover:shadow-lg transition cursor-default">
+      <img
+        src={imageUrl}
+        alt={name}
+        className="w-10 h-10 object-contain"
+        loading="lazy"
+      />
+      <span className="font-medium text-light-gray">{name}</span>
     </div>
   );
 };
@@ -17,11 +20,16 @@ const SkillBadge = ({ skill }) => {
 const Skills = () => {
   return (
     <Section id="skills" title="My Tech Stack">
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 max-w-4xl mx-auto">
-        {SKILLS.map((skill) => (
-          <SkillBadge key={skill.name} skill={skill} />
-        ))}
-      </div>
+      {Object.entries(SKILLS).map(([category, skills]) => (
+        <div key={category} className="mb-10 max-w-4xl mx-auto">
+          <h3 className="text-accent font-semibold mb-6 capitalize">{category}</h3>
+          <div className="flex flex-wrap gap-6">
+            {skills.map((skill) => (
+              <SkillBadge key={skill.name} skill={skill} />
+            ))}
+          </div>
+        </div>
+      ))}
     </Section>
   );
 };
