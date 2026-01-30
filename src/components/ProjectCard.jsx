@@ -1,8 +1,7 @@
 // src/components/ProjectCard.jsx
 
 import React from 'react';
-import { Tilt } from 'react-tilt';
-// eslint-disable-next-line no-unused-vars
+import Tilt from "react-parallax-tilt";
 import { motion } from 'framer-motion';
 
 const defaultOptions = {
@@ -28,7 +27,7 @@ const ProjectCard = ({ project }) => {
       }}
       transition={{ duration: 0.5 }}
     >
-      <Tilt options={defaultOptions} className="h-full">
+      <Tilt tiltMaxAngleX={25} tiltMaxAngleY={25} scale={1.05}>
         <div className="bg-secondary rounded-lg overflow-hidden h-full flex flex-col shadow-lg hover:shadow-accent/30 transition-shadow duration-300">
           <div className="overflow-hidden h-48 relative group">
             <img src={imageUrl} alt={title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
