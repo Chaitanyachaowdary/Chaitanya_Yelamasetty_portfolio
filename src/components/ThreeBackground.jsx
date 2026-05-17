@@ -1,35 +1,31 @@
-// src/components/ThreeBackground.jsx
-
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Points, PointMaterial } from '@react-three/drei';
 
 function Stars(props) {
     const ref = useRef();
 
-    // Generate random points on a sphere
+    const reducedMotion = useMemo(
+        () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+        []
+    );
+
     const [sphere] = useState(() => {
-        const randomInSphere = (numPoints, radius) => {
-            const points = new Float32Array(numPoints * 3);
-            for (let i = 0; i < numPoints; i++) {
-                const r = radius * Math.cbrt(Math.random());
-                const theta = Math.random() * 2 * Math.PI;
-                const phi = Math.acos(2 * Math.random() - 1);
-
-                const x = r * Math.sin(phi) * Math.cos(theta);
-                const y = r * Math.sin(phi) * Math.sin(theta);
-                const z = r * Math.cos(phi);
-
-                points[i * 3] = x;
-                points[i * 3 + 1] = y;
-                points[i * 3 + 2] = z;
-            }
-            return points;
-        };
-        return randomInSphere(5000, 1.2);
+        const points = new Float32Array(5000 * 3);
+        const radius = 1.2;
+        for (let i = 0; i < 5000; i++) {
+            const r = radius * Math.cbrt(Math.random());
+            const theta = Math.random() * 2 * Math.PI;
+            const phi = Math.acos(2 * Math.random() - 1);
+            points[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+            points[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+            points[i * 3 + 2] = r * Math.cos(phi);
+        }
+        return points;
     });
 
-    useFrame((state, delta) => {
+    useFrame((_, delta) => {
+        if (!ref.current || reducedMotion) return;
         ref.current.rotation.x -= delta / 10;
         ref.current.rotation.y -= delta / 15;
     });
@@ -51,8 +47,8 @@ function Stars(props) {
 
 const ThreeBackground = () => {
     return (
-        <div className="fixed inset-0 z-[-1] bg-primary">
-            <Canvas camera={{ position: [0, 0, 1] }}>
+        <div className="fixed inset-0 z-[-1] bg-primary" aria-hidden="true">
+            <Canvas camera={{ position: [0, 0, 1] }} dpr={[1, 1.5]}>
                 <Stars />
             </Canvas>
         </div>

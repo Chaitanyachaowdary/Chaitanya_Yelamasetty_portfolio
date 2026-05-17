@@ -1,7 +1,6 @@
 import React from "react";
 import Section from "./Section";
 import { SKILLS } from "../constants";
-// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 
 const SkillBadge = ({ skill, index }) => {

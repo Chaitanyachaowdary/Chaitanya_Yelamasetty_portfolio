@@ -1,67 +1,46 @@
-// src/components/Cursor.jsx
-
 import React, { useEffect, useState } from 'react';
-// eslint-disable-next-line no-unused-vars
-import { motion } from 'framer-motion';
+import { motion, useMotionValue, useSpring } from 'framer-motion';
 
 const Cursor = () => {
-    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+    const x = useMotionValue(-100);
+    const y = useMotionValue(-100);
+    const springX = useSpring(x, { stiffness: 500, damping: 28, mass: 0.5 });
+    const springY = useSpring(y, { stiffness: 500, damping: 28, mass: 0.5 });
     const [isHovering, setIsHovering] = useState(false);
 
     useEffect(() => {
+        if (window.matchMedia('(pointer: coarse)').matches) return;
+
         const mouseMove = (e) => {
-            setMousePosition({
-                x: e.clientX,
-                y: e.clientY
-            });
+            x.set(e.clientX - (isHovering ? 32 : 16));
+            y.set(e.clientY - (isHovering ? 32 : 16));
         };
 
         const handleMouseOver = (e) => {
-            if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.closest('a') || e.target.closest('button')) {
-                setIsHovering(true);
-            } else {
-                setIsHovering(false);
-            }
+            const interactive = e.target.closest('a, button, [role="button"]');
+            setIsHovering(Boolean(interactive));
         };
 
-        window.addEventListener("mousemove", mouseMove);
-        window.addEventListener("mouseover", handleMouseOver); // Delegate event listener
+        window.addEventListener('mousemove', mouseMove);
+        window.addEventListener('mouseover', handleMouseOver);
 
         return () => {
-            window.removeEventListener("mousemove", mouseMove);
-            window.removeEventListener("mouseover", handleMouseOver);
+            window.removeEventListener('mousemove', mouseMove);
+            window.removeEventListener('mouseover', handleMouseOver);
         };
-    }, []);
-
-    const variants = {
-        default: {
-            x: mousePosition.x - 16,
-            y: mousePosition.y - 16,
-            height: 32,
-            width: 32,
-            backgroundColor: "rgba(56, 189, 248, 0.3)", // accent color with opacity
-            border: "2px solid #38bdf8",
-        },
-        hover: {
-            x: mousePosition.x - 32,
-            y: mousePosition.y - 32,
-            height: 64,
-            width: 64,
-            backgroundColor: "rgba(56, 189, 248, 0.1)",
-            border: "2px solid #0ea5e9",
-        }
-    };
+    }, [isHovering, x, y]);
 
     return (
         <motion.div
-            className="fixed top-0 left-0 rounded-full pointer-events-none z-[9999] hidden md:block"
-            variants={variants}
-            animate={isHovering ? "hover" : "default"}
-            transition={{
-                type: "spring",
-                stiffness: 500,
-                damping: 28,
-                mass: 0.5
+            aria-hidden="true"
+            className="fixed top-0 left-0 rounded-full pointer-events-none z-[9999] hidden md:block border-2"
+            style={{
+                x: springX,
+                y: springY,
+                width: isHovering ? 64 : 32,
+                height: isHovering ? 64 : 32,
+                backgroundColor: isHovering ? 'rgba(56, 189, 248, 0.1)' : 'rgba(56, 189, 248, 0.3)',
+                borderColor: isHovering ? '#0ea5e9' : '#38bdf8',
             }}
         />
     );

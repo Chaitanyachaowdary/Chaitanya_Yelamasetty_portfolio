@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Chaitanya Yelamasetty — Redirecting</title>
+  <meta name="robots" content="noindex" />
+  <script>
+    // GitHub Pages SPA fallback: redirect any deep link back to the app root,
+    // preserving the original path as a hash so the SPA can route to it.
+    (function () {
+      var segmentCount = 1; // /Chaitanya_Yelamasetty_portfolio/
+      var l = window.location;
+      var path = l.pathname.split('/').slice(0, 1 + segmentCount).join('/') + '/';
+      var rest = l.pathname.slice(path.length);
+      l.replace(l.protocol + '//' + l.host + path + (rest ? '#/' + rest : '') + l.search + l.hash);
+    })();
+  </script>
+</head>
+<body>
+  Redirecting to <a href="/Chaitanya_Yelamasetty_portfolio/">portfolio home</a>…
+</body>
+</html>

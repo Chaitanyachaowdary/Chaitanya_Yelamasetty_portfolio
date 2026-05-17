@@ -23,6 +23,25 @@ const About = () => {
                     <p>
                         A quick and enthusiastic learner, I am always eager to adapt to new technologies and contribute effectively to dynamic development teams, continuously growing as a software professional.
                     </p>
+
+                    <div className="pt-2">
+                        <p className="text-sm uppercase tracking-wider text-medium-gray mb-3">Languages I speak</p>
+                        <div className="flex flex-wrap gap-2">
+                            {[
+                                { name: 'English', level: 'Professional' },
+                                { name: 'Telugu', level: 'Native' },
+                                { name: 'Hindi', level: 'Conversational' },
+                            ].map((lang) => (
+                                <span
+                                    key={lang.name}
+                                    className="inline-flex items-center gap-2 bg-secondary/50 border border-secondary text-light-gray text-sm px-3 py-1.5 rounded-full"
+                                >
+                                    <span className="font-semibold">{lang.name}</span>
+                                    <span className="text-medium-gray text-xs">{lang.level}</span>
+                                </span>
+                            ))}
+                        </div>
+                    </div>
                 </motion.div>
 
                 <motion.div
@@ -35,8 +54,9 @@ const About = () => {
                     <div className="absolute -inset-1 bg-gradient-to-r from-accent via-purple-500 to-blue-500 rounded-xl blur opacity-30 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-tilt"></div>
                     <div className="relative rounded-xl overflow-hidden glass p-2">
                         <img
-                            src="pic.jpg"
+                            src={`${import.meta.env.BASE_URL}pic.jpg`}
                             alt="Chaitanya Yelamasetty"
+                            loading="lazy"
                             className="w-full h-auto rounded-lg object-cover transform transition duration-500 group-hover:scale-105"
                         />
                         <div className="absolute inset-0 bg-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>

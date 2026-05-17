@@ -1,7 +1,6 @@
 // src/components/ScrollProgress.jsx
 
 import React from 'react';
-// eslint-disable-next-line no-unused-vars
 import { motion, useScroll, useSpring } from 'framer-motion';
 
 const ScrollProgress = () => {

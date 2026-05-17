@@ -4,11 +4,13 @@ import React, { useState } from 'react';
 import Section from './Section';
 import { motion } from 'framer-motion';
 
-const ContactItem = ({ icon, label, value, href, delay }) => (
+const ContactItem = ({ icon, label, value, href, delay }) => {
+    const isExternal = /^https?:/i.test(href);
+    return (
     <motion.a
         href={href}
-        target="_blank"
-        rel="noopener noreferrer"
+        {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+        aria-label={`${label}: ${value}`}
         className="flex items-center p-4 bg-secondary/50 backdrop-blur-sm border border-secondary rounded-xl hover:border-accent/50 hover:bg-secondary/80 transition-all duration-300 group"
         initial={{ opacity: 0, x: -20 }}
         whileInView={{ opacity: 1, x: 0 }}
@@ -24,7 +26,8 @@ const ContactItem = ({ icon, label, value, href, delay }) => (
             <p className="text-light-gray font-semibold group-hover:text-accent transition-colors truncate max-w-[200px] sm:max-w-xs">{value}</p>
         </div>
     </motion.a>
-);
+    );
+};
 
 const Contact = () => {
     const [formData, setFormData] = useState({
@@ -39,20 +42,36 @@ const Contact = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const endpoint = import.meta.env.VITE_FORMSPREE_ENDPOINT;
+    const fallbackEmail = 'ychaitanya317@gmail.com';
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
+        setSubmitStatus(null);
 
-        // Simulate form submission
-        setTimeout(() => {
-            console.log('Form Submitted:', formData);
+        if (!endpoint) {
+            const body = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\n${formData.message}`);
+            window.location.href = `mailto:${fallbackEmail}?subject=${encodeURIComponent('Portfolio contact from ' + formData.name)}&body=${body}`;
             setIsSubmitting(false);
+            return;
+        }
+
+        try {
+            const res = await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+                body: JSON.stringify(formData),
+            });
+            if (!res.ok) throw new Error(`Request failed: ${res.status}`);
             setSubmitStatus('success');
             setFormData({ name: '', email: '', message: '' });
-
-            // Reset status after 3 seconds
-            setTimeout(() => setSubmitStatus(null), 3000);
-        }, 1500);
+        } catch {
+            setSubmitStatus('error');
+        } finally {
+            setIsSubmitting(false);
+            setTimeout(() => setSubmitStatus(null), 5000);
+        }
     };
 
     return (
@@ -86,8 +105,8 @@ const Contact = () => {
                             <ContactItem
                                 icon="📞"
                                 label="Phone"
-                                value="+91-799385693"
-                                href="tel:+91799385693"
+                                value="+91 79938 56293"
+                                href="tel:+917993856293"
                                 delay={0.4}
                             />
                             <ContactItem
@@ -182,6 +201,15 @@ const Contact = () => {
                                     className="p-3 bg-green-500/10 border border-green-500/50 rounded-lg text-green-400 text-center text-sm font-medium"
                                 >
                                     Message sent successfully!
+                                </motion.div>
+                            )}
+                            {submitStatus === 'error' && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    className="p-3 bg-red-500/10 border border-red-500/50 rounded-lg text-red-400 text-center text-sm font-medium"
+                                >
+                                    Something went wrong. Please email me directly.
                                 </motion.div>
                             )}
                         </form>

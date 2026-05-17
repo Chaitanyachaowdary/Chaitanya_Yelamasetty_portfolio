@@ -17,10 +17,10 @@ const CodeBlock = () => {
       { text: "  name: 'Chaitanya Yelamasetty',", color: "#98c379" },
     ],
     [
-      { text: "  role: 'Junior Backend Developer',", color: "#98c379" },
+      { text: "  role: 'Full Stack Developer',", color: "#98c379" },
     ],
     [
-      { text: "  company: 'CodeSage',", color: "#98c379" },
+      { text: "  company: 'CodeSage India Pvt Ltd',", color: "#98c379" },
     ],
     [
       { text: "  skills: ['Python', 'FastAPI', 'React', 'SQL'],", color: "#98c379" },
@@ -60,6 +60,7 @@ const CodeBlock = () => {
   }, [visibleChars, totalChars]);
 
   let currentCharCount = 0;
+  let cursorPlaced = false;
 
   return (
     <Tilt
@@ -117,11 +118,17 @@ const CodeBlock = () => {
                   return null;
                 })}
 
-                {isTyping &&
-                  visibleChars === currentCharCount &&
-                  lineIndex === codeLines.length - 1 && (
-                    <span className="inline-block w-2 h-4 bg-accent ml-1 animate-pulse" />
-                  )}
+                {(() => {
+                  const showCursorHere =
+                    !cursorPlaced &&
+                    ((isTyping && visibleChars <= currentCharCount) ||
+                      (!isTyping && lineIndex === codeLines.length - 1));
+                  if (showCursorHere) {
+                    cursorPlaced = true;
+                    return <span className="inline-block w-2 h-4 bg-accent ml-1 animate-pulse align-middle" />;
+                  }
+                  return null;
+                })()}
               </div>
             </div>
           ))}

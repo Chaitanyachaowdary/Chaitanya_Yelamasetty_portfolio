@@ -1,35 +1,63 @@
-// src/components/Projects.jsx
-
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import Section from './Section';
 import ProjectCard from './ProjectCard';
-import { PROJECTS } from '../constants.jsx';
-import { motion } from 'framer-motion';
+import { PROJECTS, PROJECT_CATEGORIES } from '../constants.jsx';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const container = {
   hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.2
-    }
-  }
+  show: { opacity: 1, transition: { staggerChildren: 0.12 } }
 };
 
 const Projects = () => {
+  const [filter, setFilter] = useState('All');
+
+  const filtered = useMemo(
+    () => (filter === 'All' ? PROJECTS : PROJECTS.filter((p) => p.category === filter)),
+    [filter]
+  );
+
   return (
     <Section id="projects" title="Things I've Built">
+      <div className="flex flex-wrap justify-center gap-2 mb-10">
+        {PROJECT_CATEGORIES.map((cat) => {
+          const count = cat === 'All' ? PROJECTS.length : PROJECTS.filter((p) => p.category === cat).length;
+          const active = filter === cat;
+          return (
+            <button
+              key={cat}
+              type="button"
+              onClick={() => setFilter(cat)}
+              aria-pressed={active}
+              className={`px-4 py-2 text-sm font-semibold rounded-full border transition-all duration-300 ${
+                active
+                  ? 'bg-accent text-primary border-accent shadow-md shadow-accent/30'
+                  : 'border-secondary text-medium-gray hover:text-accent hover:border-accent'
+              }`}
+            >
+              {cat} <span className={active ? 'text-primary/70' : 'text-medium-gray/60'}>({count})</span>
+            </button>
+          );
+        })}
+      </div>
+
       <motion.div
+        key={filter}
         className="grid md:grid-cols-2 gap-8"
         variants={container}
         initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, amount: 0.1 }}
+        animate="show"
       >
-        {PROJECTS.map((project, index) => (
-          <ProjectCard key={project.title} project={project} index={index} />
-        ))}
+        <AnimatePresence mode="popLayout">
+          {filtered.map((project) => (
+            <ProjectCard key={project.title} project={project} />
+          ))}
+        </AnimatePresence>
       </motion.div>
+
+      {filtered.length === 0 && (
+        <p className="text-center text-medium-gray mt-8">No projects in this category yet.</p>
+      )}
 
       <div className="mt-12 text-center">
         <a

@@ -10,14 +10,21 @@ lerna-debug.log*
 # Dependencies
 node_modules/
 
-# Vite / build
-# dist          ← IMPORTANT: keep this commented for GitHub Pages
+# Vite / build (built by the GitHub Actions workflow)
+dist
 dist-ssr/
+
+# Local tooling caches & QA artifacts
+.claude/
+.playwright-mcp/
+qa-*.png
+portfolio-verify.png
 
 # Local env files
 *.local
 .env
 .env.*
+!.env.example
 
 # Editor directories and files
 .vscode/*
