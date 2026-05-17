@@ -18,6 +18,7 @@ dist-ssr/
 .claude/
 .playwright-mcp/
 qa-*.png
+qa-*.jpg
 portfolio-verify.png
 
 # Local env files
