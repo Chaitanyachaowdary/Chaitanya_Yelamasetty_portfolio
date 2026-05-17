@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://chaitanyachaowdary.github.io/Chaitanya_Yelamasetty_portfolio/sitemap.xml
+Sitemap: https://chaitanya-yelamasetty-portfolio.vercel.app/sitemap.xml

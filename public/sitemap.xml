@@ -1,40 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://chaitanyachaowdary.github.io/Chaitanya_Yelamasetty_portfolio/</loc>
+    <loc>https://chaitanya-yelamasetty-portfolio.vercel.app/</loc>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://chaitanyachaowdary.github.io/Chaitanya_Yelamasetty_portfolio/#about</loc>
+    <loc>https://chaitanya-yelamasetty-portfolio.vercel.app/#about</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://chaitanyachaowdary.github.io/Chaitanya_Yelamasetty_portfolio/#experience</loc>
+    <loc>https://chaitanya-yelamasetty-portfolio.vercel.app/#experience</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://chaitanyachaowdary.github.io/Chaitanya_Yelamasetty_portfolio/#clients</loc>
+    <loc>https://chaitanya-yelamasetty-portfolio.vercel.app/#clients</loc>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://chaitanyachaowdary.github.io/Chaitanya_Yelamasetty_portfolio/#skills</loc>
+    <loc>https://chaitanya-yelamasetty-portfolio.vercel.app/#skills</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://chaitanyachaowdary.github.io/Chaitanya_Yelamasetty_portfolio/#projects</loc>
+    <loc>https://chaitanya-yelamasetty-portfolio.vercel.app/#projects</loc>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://chaitanyachaowdary.github.io/Chaitanya_Yelamasetty_portfolio/#certifications</loc>
+    <loc>https://chaitanya-yelamasetty-portfolio.vercel.app/#certifications</loc>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://chaitanyachaowdary.github.io/Chaitanya_Yelamasetty_portfolio/#education</loc>
+    <loc>https://chaitanya-yelamasetty-portfolio.vercel.app/#education</loc>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://chaitanyachaowdary.github.io/Chaitanya_Yelamasetty_portfolio/#contact</loc>
+    <loc>https://chaitanya-yelamasetty-portfolio.vercel.app/#contact</loc>
     <priority>0.7</priority>
   </url>
 </urlset>
