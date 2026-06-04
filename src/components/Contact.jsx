@@ -80,7 +80,7 @@ const Contact = () => {
                 <div className="grid lg:grid-cols-2 gap-12 items-start">
 
                     {/* Left Column: Contact Info */}
-                    <div className="space-y-8">
+                    <div className="space-y-8 min-w-0">
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
@@ -89,8 +89,9 @@ const Contact = () => {
                         >
                             <h3 className="text-2xl font-bold text-light-gray mb-4">Let's Connect</h3>
                             <p className="text-medium-gray text-lg mb-8 leading-relaxed">
-                                I'm currently looking for new opportunities as a Full Stack Developer.
-                                Whether you have a question, a project idea, or just want to say hi, feel free to reach out!
+                                I'm open to full-time roles as a Full Stack Developer &amp; UI/UX Designer,
+                                and I also take on <span className="text-accent font-semibold">freelance projects</span>.
+                                Need a developer for your idea? Have a question, or just want to say hi? Feel free to reach out!
                             </p>
                         </motion.div>
 
@@ -135,7 +136,7 @@ const Contact = () => {
 
                     {/* Right Column: Contact Form */}
                     <motion.div
-                        className="bg-secondary/30 backdrop-blur-md border border-secondary p-8 rounded-2xl shadow-xl"
+                        className="bg-secondary/30 backdrop-blur-md border border-secondary p-6 sm:p-8 rounded-2xl shadow-xl min-w-0 w-full"
                         initial={{ opacity: 0, x: 20 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}

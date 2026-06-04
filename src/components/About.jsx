@@ -15,7 +15,7 @@ const About = () => {
                     transition={{ duration: 0.6, delay: 0.2 }}
                 >
                     <p>
-                        As an aspiring <span className="text-accent font-semibold">Full Stack Web Developer</span>, I possess a solid understanding of programming fundamentals and have hands-on experience building responsive web applications using Java, Python, JavaScript, HTML, CSS, and the React framework.
+                        I'm a <span className="text-accent font-semibold">Full Stack Web Developer</span> and <span className="text-accent font-semibold">UI/UX Designer</span> with a solid understanding of programming fundamentals and hands-on experience building responsive web applications using Java, Python, JavaScript, HTML, CSS, and the React framework.
                     </p>
                     <p>
                         I am passionate about crafting efficient, high-quality software solutions and am adept at analyzing and overcoming complex technical challenges.
@@ -54,7 +54,7 @@ const About = () => {
                     <div className="absolute -inset-1 bg-gradient-to-r from-accent via-purple-500 to-blue-500 rounded-xl blur opacity-30 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-tilt"></div>
                     <div className="relative rounded-xl overflow-hidden glass p-2">
                         <img
-                            src={`${import.meta.env.BASE_URL}pic.jpg`}
+                            src={`${import.meta.env.BASE_URL}pic.webp`}
                             alt="Chaitanya Yelamasetty"
                             loading="lazy"
                             className="w-full h-auto rounded-lg object-cover transform transition duration-500 group-hover:scale-105"

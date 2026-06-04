@@ -14,7 +14,9 @@ const Section = ({ id, title, children }) => {
       transition={{ duration: 0.6, ease: "easeOut" }}
     >
       <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
-        {title} <span className="text-accent">.</span>
+        <span className="text-gradient">{title}</span>
+        <span className="text-accent">.</span>
+        <span className="block mx-auto mt-4 h-1 w-16 rounded-full bg-gradient-to-r from-accent to-indigo-500" aria-hidden="true"></span>
       </h2>
       {children}
     </motion.section>

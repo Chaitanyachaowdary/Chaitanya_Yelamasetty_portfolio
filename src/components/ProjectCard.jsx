@@ -16,18 +16,18 @@ const ProjectCard = ({ project }) => {
       }}
       transition={{ duration: 0.5 }}
     >
-      <Tilt tiltMaxAngleX={25} tiltMaxAngleY={25} scale={1.05}>
-        <div className="bg-secondary rounded-lg overflow-hidden h-full flex flex-col shadow-lg hover:shadow-accent/30 transition-shadow duration-300">
-          <div className="overflow-hidden h-48 relative group">
-            <img src={src} alt={title} loading="lazy" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-            {/* Overlay for "View Project" perhaps? Keeping it simple for now as requested */}
+      <Tilt tiltMaxAngleX={6} tiltMaxAngleY={6} glareEnable={false} className="h-full">
+        <div className="card h-full flex flex-col overflow-hidden group">
+          <div className="overflow-hidden h-48 relative">
+            <img src={src} alt={title} loading="lazy" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+            <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent opacity-60" />
           </div>
           <div className="p-6 flex flex-col flex-grow">
-            <h3 className="text-xl font-bold text-light-gray mb-2">{title}</h3>
-            <p className="text-medium-gray mb-4 text-sm flex-grow">{description}</p>
+            <h3 className="text-xl font-bold text-light-gray mb-2 group-hover:text-accent transition-colors">{title}</h3>
+            <p className="text-medium-gray mb-4 text-sm flex-grow leading-relaxed">{description}</p>
             <div className="flex flex-wrap gap-2 mb-6">
               {tags.map((tag) => (
-                <span key={tag} className="bg-primary/50 border border-medium-gray/20 text-accent text-xs font-semibold px-2.5 py-1 rounded-full">
+                <span key={tag} className="bg-white/5 border border-white/10 text-medium-gray text-xs font-medium px-2.5 py-1 rounded-full">
                   {tag}
                 </span>
               ))}

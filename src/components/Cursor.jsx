@@ -33,7 +33,7 @@ const Cursor = () => {
     return (
         <motion.div
             aria-hidden="true"
-            className="fixed top-0 left-0 rounded-full pointer-events-none z-[9999] hidden md:block border-2"
+            className="fixed top-0 left-0 rounded-full pointer-events-none z-[10050] hidden md:block border-2"
             style={{
                 x: springX,
                 y: springY,

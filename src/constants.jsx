@@ -12,22 +12,26 @@ export const SKILLS = {
   frontend: [
     { name: 'React.js', imageUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg' },
     { name: 'Next.js', imageUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg' },
+    { name: 'Vite', imageUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vitejs/vitejs-original.svg' },
     { name: 'HTML5', imageUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg' },
     { name: 'CSS3', imageUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg' },
     { name: 'Tailwind CSS', imageUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg' }
   ],
   backend: [
     { name: 'Node.js', imageUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg' },
+    { name: 'Hono', imageUrl: 'https://cdn.simpleicons.org/hono' },
+    { name: 'Zod', imageUrl: 'https://cdn.simpleicons.org/zod' },
     { name: 'Spring Boot', imageUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg' },
     { name: 'Hibernate', imageUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/hibernate/hibernate-original.svg' },
-    { name: 'JDBC', imageUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg' }, // Using Java logo for JDBC as it's standard
     { name: 'FastAPI', imageUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original.svg' },
     { name: 'REST APIs', imageUrl: 'https://cdn-icons-png.flaticon.com/512/8297/8297437.png' }, // Icon for API
     { name: 'Maven', imageUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/maven/maven-original.svg' }
   ],
   database: [
-    { name: 'MySQL', imageUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg' },
     { name: 'PostgreSQL', imageUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg' },
+    { name: 'Drizzle ORM', imageUrl: 'https://cdn.simpleicons.org/drizzle' },
+    { name: 'Redis', imageUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original.svg' },
+    { name: 'MySQL', imageUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg' },
     { name: 'MongoDB', imageUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg' }
   ],
   cloud: [
@@ -52,10 +56,10 @@ export const EXPERIENCE = [
     accent: 'from-purple-500 to-indigo-500',
     period: 'Jan 2026 – Present',
     description: [
-      'Developing and maintaining scalable backend services using Python and FastAPI.',
-      'Collaborating with cross-functional teams to define, design, and ship new features.',
-      'Optimizing application performance and troubleshooting complex issues.',
-      'Participating in code reviews and adhering to best practices for software development.'
+      'Building full-stack features with React 19, Vite, and TypeScript on the front end and Node.js + Hono services on the back end.',
+      'Designing type-safe PostgreSQL data access with Drizzle ORM and Zod, plus S3 file storage, real-time SSE, and BullMQ/Redis background jobs.',
+      'Collaborating with cross-functional teams to define, design, and ship new features in an Agile workflow.',
+      'Optimizing application performance, troubleshooting complex issues, and participating in code reviews.'
     ]
   },
   {
@@ -83,13 +87,13 @@ export const CLIENT_WORK = [
     logoUrl: 'clients/enable-india.png',
     project: 'MEL Platform — Monitoring, Evaluation & Learning (GarvSe programme)',
     role: 'Full Stack Developer',
-    period: 'Apr 2026 – Present',
+    period: 'Feb 2026 – Present',
     deliverables: [
-      'Shipped production-grade authentication: password + email/SMS OTP forgot-password, forced first-time password change, Redis-backed lockout (5x → 15 min), and 30-day JWT sessions.',
-      'Designed a wireframe-aligned PostgreSQL schema (10 tables) and built secure REST APIs with Hono + Drizzle, hardened with bcrypt-12, hashed OTPs at rest, sliding-window rate limits, and no-enumeration responses.',
-      'Built the React 19 + Vite + Tauri 2 client with TanStack Router/Query and TypeScript across web + desktop, plus a live multi-repo context dashboard; 102 automated tests passing (40 backend Vitest + 62 frontend Vitest).',
+      'Building lightweight, type-safe REST APIs with Node.js + Hono and Zod validation, backed by PostgreSQL 17 (Dockerized on EC2) and Drizzle ORM for fully type-safe data access.',
+      'Architected real-time updates with PostgreSQL LISTEN/NOTIFY over Hono SSE, Amazon S3 file storage with access-control middleware, and background jobs via BullMQ + Redis + pg_cron.',
+      'Building the React 19 + Vite + TypeScript front end with shadcn/ui, Tailwind CSS, and TanStack Router; production-grade auth (OTP, lockout, JWT) with strong automated test coverage.',
     ],
-    stack: ['React 19', 'TypeScript', 'Tauri 2', 'TanStack Router/Query', 'Hono', 'Drizzle', 'PostgreSQL', 'Redis', 'BullMQ', 'AWS', 'Docker'],
+    stack: ['React 19', 'Vite', 'TypeScript', 'TanStack Router', 'shadcn/ui', 'Node.js', 'Hono', 'Zod', 'Drizzle ORM', 'PostgreSQL 17', 'Redis', 'BullMQ', 'Amazon S3', 'Docker', 'EC2'],
     websiteUrl: 'https://enableindia.org/',
   },
 ];
@@ -102,7 +106,7 @@ export const PROJECTS = [
     description: 'Real-time chat application with one-to-one messaging, WhatsApp-inspired responsive UI, and persistent data storage. Deployed using Vercel for seamless accessibility.',
     tags: ['React', 'Tailwind', 'Node.js', 'Socket.io', 'JSON Server', 'Vercel'],
     category: 'Full-stack',
-    imageUrl: 'whatsappclone.jpg',
+    imageUrl: 'whatsappclone.webp',
     liveUrl: 'https://whatsappclone-jet.vercel.app/',
     repoUrl: 'https://github.com/Chaitanyachaowdary/whatsappclone',
   },
@@ -111,7 +115,7 @@ export const PROJECTS = [
     description: 'Built a fully responsive, pixel-perfect clone of the Design Declares website. Implemented scroll-triggered animations, sticky bottom navigation, and smooth user interactions. Deployed on Vercel.',
     tags: ['React.js', 'Tailwind CSS', 'Vercel'],
     category: 'Frontend',
-    imageUrl: 'Design.png',
+    imageUrl: 'Design.webp',
     liveUrl: 'https://design-one-gold.vercel.app/',
     repoUrl: 'https://github.com/Chaitanyachaowdary/Design',
   },
@@ -120,7 +124,7 @@ export const PROJECTS = [
     description: 'Developed a React-based healthcare simulation platform as part of a patient project. Enabled interactive training for mental health professionals through AI-powered virtual patient conversations. Deployed using Vercel for seamless accessibility.',
     tags: ['React', 'AI', 'Vercel'],
     category: 'AI',
-    imageUrl: 'health.png',
+    imageUrl: 'health.webp',
     liveUrl: 'https://healthcare-psi-sepia.vercel.app/',
     repoUrl: 'https://github.com/Chaitanyachaowdary/healthcare',
   },
@@ -129,16 +133,15 @@ export const PROJECTS = [
     description: 'A React.js e-commerce frontend demonstrating authentication, Tailwind CSS styling, API integration, and state management with Redux/Context API.',
     tags: ['React', 'Tailwind CSS', 'Vercel'],
     category: 'Frontend',
-    imageUrl: 'easyshop.png',
+    imageUrl: 'easyshop.webp',
     liveUrl: 'https://easy-shop-main.vercel.app/',
-    repoUrl: 'https://github.com/Chaitanyachaowdary/easy_shop-main'
   },
   {
     title: 'Cubic Technologies Website',
     description: 'Developed a static business portfolio website to showcase Cubic Technologies\' services and branding. Designed for responsiveness and ease of navigation, and deployed on Vercel.',
     tags: ['HTML', 'CSS', 'JavaScript', 'Vercel'],
     category: 'Frontend',
-    imageUrl: 'cubic.png',
+    imageUrl: 'cubic.webp',
     liveUrl: 'https://cubic-technologies.vercel.app/',
     repoUrl: 'https://github.com/Chaitanyachaowdary/cubic-technologies',
   },
@@ -147,7 +150,7 @@ export const PROJECTS = [
     description: 'Corporate site for Veltore, an AI-native software studio that runs the veltore.ai career platform. Built as a single static page with Tailwind via CDN, inline Feather icons, and aurora-gradient visual language. Shipped on Cloudflare Pages.',
     tags: ['HTML5', 'Tailwind CSS', 'Cloudflare Pages'],
     category: 'Frontend',
-    imageUrl: 'veltore.jpg',
+    imageUrl: 'veltore.webp',
     liveUrl: 'https://veltore.vercel.app/',
   },
   {
@@ -155,7 +158,7 @@ export const PROJECTS = [
     description: 'A powerful AI chat application powered by the OpenAI API. Features real-time conversation, code highlighting, and a responsive UI mimicking the original ChatGPT experience.',
     tags: ['React', 'OpenAI API', 'Node.js', 'Tailwind CSS'],
     category: 'AI',
-    imageUrl: 'chatgpt-preview.png',
+    imageUrl: 'chatgpt-preview.webp',
     liveUrl: 'https://drive.google.com/file/d/14ihb6-vbyO-imzH3KekO_e4xChCEclSG/view',
     liveLabel: 'Demo Video',
     repoUrl: 'https://github.com/Chaitanyachaowdary/ChatWIthAI',
@@ -164,19 +167,22 @@ export const PROJECTS = [
 
 export const EDUCATION = [
   {
-    degree: 'B.Tech in Electronics and Communication Engineering (GPA: 7.2)',
+    degree: 'B.Tech in Electronics and Communication Engineering',
+    gpa: 'GPA: 7.2',
     institution: 'JNTU Anantapur (SVPCET)',
     period: 'Dec 2021 – April 2025',
     description: 'Puttur, Tirupati, Andhra Pradesh',
   },
   {
-    degree: 'Intermediate in Maths, Physics, and Chemistry (GPA: 6.6)',
+    degree: 'Intermediate (Maths, Physics, Chemistry)',
+    gpa: 'GPA: 6.6',
     institution: 'Vijayawada Nalanda Junior College',
     period: 'June 2019 – May 2021',
     description: 'Anantapur, Andhra Pradesh',
   },
   {
-    degree: '10th (General) (GPA: 8.2)',
+    degree: 'SSC (10th, General)',
+    gpa: 'GPA: 8.2',
     institution: 'Loyola E.M High School',
     period: 'June 2018 – April 2019',
     description: 'Hindupur, Andhra Pradesh',

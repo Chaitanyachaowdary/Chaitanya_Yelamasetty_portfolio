@@ -62,10 +62,10 @@ const ClientCard = ({ entry, index }) => {
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`Visit ${client} website`}
-            className="text-medium-gray hover:text-accent text-sm font-semibold flex items-center gap-1 group"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent border border-accent/40 hover:bg-accent/10 hover:border-accent rounded-full px-3 py-1.5 transition-colors duration-300 group"
           >
-            <span className="group-hover:underline">Visit site</span>
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 transform group-hover:-translate-y-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+            <span>{websiteUrl.replace(/^https?:\/\//, '').replace(/\/$/, '')}</span>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
             </svg>
           </a>
