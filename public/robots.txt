@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://chaitanya-yelamasetty-portfolio.vercel.app/sitemap.xml
