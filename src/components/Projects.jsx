@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import Section from './Section';
 import ProjectCard from './ProjectCard';
+import ProjectModal from './ProjectModal';
 import { PROJECTS, PROJECT_CATEGORIES } from '../constants.jsx';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -11,6 +12,7 @@ const container = {
 
 const Projects = () => {
   const [filter, setFilter] = useState('All');
+  const [openProject, setOpenProject] = useState(null);
 
   const filtered = useMemo(
     () => (filter === 'All' ? PROJECTS : PROJECTS.filter((p) => p.category === filter)),
@@ -50,7 +52,7 @@ const Projects = () => {
       >
         <AnimatePresence mode="popLayout">
           {filtered.map((project) => (
-            <ProjectCard key={project.title} project={project} />
+            <ProjectCard key={project.title} project={project} onOpen={() => setOpenProject(project)} />
           ))}
         </AnimatePresence>
       </motion.div>
@@ -58,6 +60,8 @@ const Projects = () => {
       {filtered.length === 0 && (
         <p className="text-center text-medium-gray mt-8">No projects in this category yet.</p>
       )}
+
+      <ProjectModal project={openProject} onClose={() => setOpenProject(null)} />
 
       <div className="mt-12 text-center">
         <a

@@ -33,10 +33,10 @@ const COMMANDS = [
   { group: 'Navigate', label: 'Certifications', kind: 'nav', action: () => scrollToId('certifications'), icon: <NavIcon /> },
   { group: 'Navigate', label: 'Education', kind: 'nav', action: () => scrollToId('education'), icon: <NavIcon /> },
   { group: 'Navigate', label: 'Contact', kind: 'nav', action: () => scrollToId('contact'), icon: <NavIcon /> },
-  { group: 'Connect', label: 'Email me', kind: 'link', action: () => { window.location.href = 'mailto:ychaitanya317@gmail.com'; }, icon: <MailIcon /> },
+  { group: 'Connect', label: 'Email me', kind: 'link', action: () => { window.location.href = 'mailto:chaitanyachowdary4e3@gmail.com'; }, icon: <MailIcon /> },
   { group: 'Connect', label: 'GitHub', kind: 'link', action: () => window.open('https://github.com/Chaitanyachaowdary', '_blank'), icon: <LinkIcon /> },
   { group: 'Connect', label: 'LinkedIn', kind: 'link', action: () => window.open('https://www.linkedin.com/in/chaitanya-yelamasetty', '_blank'), icon: <LinkIcon /> },
-  { group: 'Connect', label: 'X (Twitter)', kind: 'link', action: () => window.open('https://x.com/Chaitanya154975', '_blank'), icon: <LinkIcon /> },
+  { group: 'Connect', label: 'X (Twitter)', kind: 'link', action: () => window.open('https://x.com/chaitanyatarak9', '_blank'), icon: <LinkIcon /> },
 ];
 
 const CommandPalette = () => {

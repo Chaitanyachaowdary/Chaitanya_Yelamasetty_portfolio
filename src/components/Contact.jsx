@@ -43,7 +43,7 @@ const Contact = () => {
     };
 
     const endpoint = import.meta.env.VITE_FORMSPREE_ENDPOINT;
-    const fallbackEmail = 'ychaitanya317@gmail.com';
+    const fallbackEmail = 'chaitanyachowdary4e3@gmail.com';
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -89,9 +89,9 @@ const Contact = () => {
                         >
                             <h3 className="text-2xl font-bold text-light-gray mb-4">Let's Connect</h3>
                             <p className="text-medium-gray text-lg mb-8 leading-relaxed">
-                                I'm open to full-time roles as a Full Stack Developer &amp; UI/UX Designer,
-                                and I also take on <span className="text-accent font-semibold">freelance projects</span>.
-                                Need a developer for your idea? Have a question, or just want to say hi? Feel free to reach out!
+                                I'm open to <span className="text-accent font-semibold">remote full-stack &amp; DevOps roles</span>
+                                as a Full Stack &amp; DevOps Engineer, and I also take on freelance projects.
+                                Have a role in mind, a question, or just want to say hi? Feel free to reach out!
                             </p>
                         </motion.div>
 
@@ -99,8 +99,8 @@ const Contact = () => {
                             <ContactItem
                                 icon="📧"
                                 label="Email"
-                                value="ychaitanya317@gmail.com"
-                                href="mailto:ychaitanya317@gmail.com"
+                                value="chaitanyachowdary4e3@gmail.com"
+                                href="mailto:chaitanyachowdary4e3@gmail.com"
                                 delay={0.3}
                             />
                             <ContactItem
@@ -127,8 +127,8 @@ const Contact = () => {
                             <ContactItem
                                 icon="✖️"
                                 label="X (Twitter)"
-                                value="Chaitanya154975"
-                                href="https://x.com/Chaitanya154975"
+                                value="chaitanyatarak9"
+                                href="https://x.com/chaitanyatarak9"
                                 delay={0.7}
                             />
                         </div>

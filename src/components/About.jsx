@@ -15,7 +15,7 @@ const About = () => {
                     transition={{ duration: 0.6, delay: 0.2 }}
                 >
                     <p>
-                        I'm a <span className="text-accent font-semibold">Full Stack Web Developer</span> and <span className="text-accent font-semibold">UI/UX Designer</span> with a solid understanding of programming fundamentals and hands-on experience building responsive web applications using Java, Python, JavaScript, HTML, CSS, and the React framework.
+                        I'm a <span className="text-accent font-semibold">Full Stack &amp; DevOps Engineer</span> with 2+ years of experience building and shipping <span className="text-accent font-semibold">accessibility-first, production-scale</span> software end to end — frontend, backend APIs, databases, and cloud deployment. I work primarily with React, Node.js, and NestJS on PostgreSQL, plus AWS, Docker, and CI/CD.
                     </p>
                     <p>
                         I am passionate about crafting efficient, high-quality software solutions and am adept at analyzing and overcoming complex technical challenges.

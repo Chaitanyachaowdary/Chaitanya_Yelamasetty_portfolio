@@ -19,6 +19,7 @@ import CommandPalette from './components/CommandPalette';
 import AskMe from './components/AskMe';
 import Spotlight from './components/Spotlight';
 import CardGlow from './components/CardGlow';
+import Loader from './components/Loader';
 import Lenis from 'lenis';
 import 'lenis/dist/lenis.css';
 
@@ -57,6 +58,7 @@ const App = () => {
   return (
     <MotionConfig reducedMotion="user">
       <div className="text-light-gray font-sans md:cursor-none">
+        <Loader />
         <StarField />
         <Spotlight />
         <CardGlow />

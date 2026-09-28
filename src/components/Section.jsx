@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import ScrambleText from './ScrambleText';
 
 const Section = ({ id, title, children }) => {
   return (
@@ -14,7 +15,7 @@ const Section = ({ id, title, children }) => {
       transition={{ duration: 0.6, ease: "easeOut" }}
     >
       <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
-        <span className="text-gradient">{title}</span>
+        <ScrambleText as="span" className="text-gradient" text={title} />
         <span className="text-accent">.</span>
         <span className="block mx-auto mt-4 h-1 w-16 rounded-full bg-gradient-to-r from-accent to-indigo-500" aria-hidden="true"></span>
       </h2>

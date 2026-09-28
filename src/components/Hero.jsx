@@ -1,9 +1,10 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { ReactTyped } from 'react-typed';
 import { EXPERIENCE, PROJECTS, CERTIFICATIONS, SKILLS } from '../constants.jsx';
 import CountUp from './CountUp';
 import Magnetic from './Magnetic';
+import ParticleField from './ParticleField';
 
 const techCount = Object.values(SKILLS).reduce((a, g) => a + g.length, 0);
 const current = EXPERIENCE[0];
@@ -15,7 +16,7 @@ const SocialLink = ({ href, label, children }) => (
     target="_blank"
     rel="noopener noreferrer"
     aria-label={label}
-    className="text-medium-gray hover:text-accent transition-colors duration-300"
+    className="inline-flex h-6 w-6 items-center justify-center text-medium-gray hover:text-accent transition-colors duration-300"
     whileHover={{ scale: 1.15, y: -2 }}
     whileTap={{ scale: 0.9 }}
   >
@@ -32,9 +33,15 @@ const rise = (delay = 0) => ({
 
 const Hero = () => {
   const companyLogo = current.logoUrl ? `${import.meta.env.BASE_URL}${current.logoUrl}` : '';
+  // Subtle depth: the 3D backdrop drifts slower than the page as you scroll.
+  const { scrollY } = useScroll();
+  const bgY = useTransform(scrollY, [0, 700], [0, 140]);
 
   return (
-    <section id="hero" className="min-h-screen flex items-center pt-28 pb-16 relative">
+    <section id="hero" className="min-h-screen flex items-center pt-28 pb-16 relative overflow-hidden">
+      <motion.div className="absolute inset-0 -z-10" style={{ y: bgY }} aria-hidden="true">
+        <ParticleField />
+      </motion.div>
       <div className="w-full grid lg:grid-cols-12 gap-10 lg:gap-8 items-center">
 
         {/* LEFT — editorial */}
@@ -49,7 +56,7 @@ const Hero = () => {
             </span>
             <span className="text-light-gray">Available — Full-time &amp; Freelance</span>
             <span className="text-white/20 hidden sm:inline">·</span>
-            <span className="hidden sm:inline">Remote · Hybrid · Onsite</span>
+            <span className="hidden sm:inline">Bengaluru · Remote · Hybrid · Onsite</span>
           </motion.div>
 
           <motion.h1
@@ -65,7 +72,7 @@ const Hero = () => {
             className="text-xl sm:text-2xl lg:text-3xl font-bold text-medium-gray mb-6 min-h-[36px]"
           >
             <ReactTyped
-              strings={['Full Stack Developer', 'UI/UX Designer', 'React Engineer', 'Problem Solver']}
+              strings={['Full Stack & DevOps Engineer', 'React & Node.js Developer', 'Accessibility-First Products', 'Problem Solver']}
               typeSpeed={45}
               backSpeed={28}
               backDelay={1600}
@@ -74,11 +81,11 @@ const Hero = () => {
           </motion.div>
 
           <motion.p {...rise(0.24)} className="text-medium-gray text-base sm:text-lg max-w-xl mb-9 leading-relaxed">
-            I design and build fast, intuitive web products — from clean interfaces
-            to scalable backends. Currently shipping production software at
-            <span className="text-light-gray font-medium"> EnAble India</span> and
+            I build and ship accessibility-first, production-scale software end to end —
+            from clean React interfaces to Node.js APIs, databases, and cloud deployment.
+            Currently building products at
             <span className="text-light-gray font-medium"> CodeSage</span>, and
-            <span className="text-light-gray font-medium"> open to freelance projects</span>.
+            <span className="text-light-gray font-medium"> open to remote roles</span>.
           </motion.p>
 
           <motion.div {...rise(0.32)} className="flex flex-wrap items-center gap-4">
@@ -107,7 +114,7 @@ const Hero = () => {
               <SocialLink href="https://www.linkedin.com/in/chaitanya-yelamasetty" label="LinkedIn profile">
                 <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-4.47 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.59-11.018-3.714v-2.155z" /></svg>
               </SocialLink>
-              <SocialLink href="https://x.com/Chaitanya154975" label="X (Twitter) profile">
+              <SocialLink href="https://x.com/chaitanyatarak9" label="X (Twitter) profile">
                 <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.901 1.144h3.762L14.417 9.87l7.545 11.002h-6.24L11.564 12.012l-6.31 8.864H1.385l8.037-11.196L1.082 1.144h7.828l4.914 6.789L18.901 1.144zm-1.666 17.502h2.208L7.697 3.529H5.35L17.235 18.646z" /></svg>
               </SocialLink>
             </div>
@@ -172,14 +179,13 @@ const Hero = () => {
             </span>
           </a>
 
-          {/* Certs + location */}
-          <div className="card p-5 flex flex-col justify-center">
-            <p className="text-light-gray font-bold leading-tight">{CERTIFICATIONS.length} Certs</p>
-            <p className="text-medium-gray text-sm mt-1">+ ongoing learning</p>
-          </div>
-          <div className="card p-5 flex flex-col justify-center">
-            <p className="text-light-gray font-bold leading-tight">India</p>
-            <p className="text-medium-gray text-sm mt-1">Andhra Pradesh · IST</p>
+          {/* Certs — wide */}
+          <div className="card col-span-2 p-5 flex items-center justify-between">
+            <div>
+              <p className="text-light-gray font-bold leading-tight">{CERTIFICATIONS.length} Certifications</p>
+              <p className="text-medium-gray text-sm mt-1">+ ongoing learning</p>
+            </div>
+            <span className="text-2xl" aria-hidden="true">🎓</span>
           </div>
         </motion.div>
       </div>
