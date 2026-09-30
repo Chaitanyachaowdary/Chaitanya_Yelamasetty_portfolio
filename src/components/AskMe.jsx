@@ -23,14 +23,74 @@ const AskMe = () => {
 
   useEffect(() => { voiceRepliesRef.current = voiceReplies; }, [voiceReplies]);
 
-  const speak = (text) => {
+  // Voices load asynchronously. getVoices() returns [] on the first call in
+  // Chrome and Edge until the engine has enumerated them, and an utterance
+  // spoken before that happens is silently dropped — which is exactly the
+  // "it does not read anything" case, and why it looked fine in testing: the
+  // call succeeds, nothing comes out.
+  const voicesReady = () =>
+    new Promise((resolve) => {
+      const have = window.speechSynthesis.getVoices();
+      if (have.length) return resolve(have);
+      let done = false;
+      const finish = () => {
+        if (done) return;
+        done = true;
+        resolve(window.speechSynthesis.getVoices());
+      };
+      window.speechSynthesis.addEventListener('voiceschanged', finish, { once: true });
+      // Some engines never fire the event; do not hang on them.
+      setTimeout(finish, 1500);
+    });
+
+  const keepAlive = useRef(null);
+
+  const speak = async (text) => {
     if (!ttsSupported) return;
     window.speechSynthesis.cancel();
+    clearInterval(keepAlive.current);
+
+    const voices = await voicesReady();
     const u = new SpeechSynthesisUtterance(text);
-    u.rate = 1.05; u.pitch = 1; u.lang = 'en-US';
-    window.speechSynthesis.speak(u);
+    u.rate = 1.05;
+    u.pitch = 1;
+    u.lang = 'en-US';
+    // Pick a real voice rather than relying on the default. With only a lang
+    // hint some systems match nothing and stay silent.
+    const pick =
+      voices.find((v) => /^en[-_]?(GB|IN)/i.test(v.lang)) ||
+      voices.find((v) => /^en/i.test(v.lang)) ||
+      voices[0];
+    if (pick) u.voice = pick;
+
+    u.onerror = (e) => {
+      clearInterval(keepAlive.current);
+      // 'interrupted' and 'canceled' are us calling cancel(); not worth telling
+      // the visitor about.
+      if (e?.error && e.error !== 'interrupted' && e.error !== 'canceled') {
+        setSpeechNote('Could not play the reply aloud in this browser.');
+      }
+    };
+    u.onend = () => clearInterval(keepAlive.current);
+
+    // Chrome stops synthesising after roughly fifteen seconds unless it is
+    // nudged, which truncates longer answers mid-sentence.
+    keepAlive.current = setInterval(() => {
+      if (!window.speechSynthesis.speaking) return clearInterval(keepAlive.current);
+      window.speechSynthesis.pause();
+      window.speechSynthesis.resume();
+    }, 10000);
+
+    // cancel() followed synchronously by speak() can swallow the utterance in
+    // Chrome; yielding a frame avoids the race.
+    setTimeout(() => window.speechSynthesis.speak(u), 60);
   };
-  const stopSpeaking = () => { if (ttsSupported) window.speechSynthesis.cancel(); };
+
+  const stopSpeaking = () => {
+    if (!ttsSupported) return;
+    clearInterval(keepAlive.current);
+    window.speechSynthesis.cancel();
+  };
 
   useEffect(() => {
     window.__openAskMe = () => setOpen(true);
