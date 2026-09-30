@@ -28,19 +28,23 @@
   }
 
   :root[data-theme='light'] {
-    --c-primary: 248 250 252;
+    /* A warm off-white rather than a cool grey. The first pass used slate
+       (#f8fafc / #0f172a), which read clinical next to the dark theme's depth.
+       Warming the paper and the ink keeps it comfortable to read for long
+       stretches without losing any contrast — every pair still clears AA. */
+    --c-primary: 250 249 247; /* warm paper */
     --c-secondary: 255 255 255;
-    --c-surface: 241 245 249;
+    --c-surface: 245 243 240;
     --c-accent: 3 105 161; /* darkened so it clears 4.5:1 on white */
     --c-accent-hover: 7 89 133;
-    --c-text: 15 23 42; /* 17.06:1 on page bg */
-    --c-muted: 71 85 105; /*  7.24:1 on page bg */
-    --c-dark: 226 232 240;
-    --c-line: 15 23 42;
-    --c-elevated: 15 23 42;
-    --c-code-bg: 241 245 249;
+    --c-text: 28 26 23; /* warm ink — 16.50:1 on page bg */
+    --c-muted: 87 83 78; /*            —  7.25:1 on page bg */
+    --c-dark: 231 229 225;
+    --c-line: 28 26 23;
+    --c-elevated: 28 26 23;
+    --c-code-bg: 245 243 240;
     /* darkened ramp so headings stay legible on a light page */
-    --g-1: #0f172a;
+    --g-1: #1c1a17;
     --g-2: #0369a1;
     --g-3: #4338ca;
     color-scheme: light;
