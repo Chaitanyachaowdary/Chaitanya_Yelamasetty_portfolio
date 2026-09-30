@@ -24,7 +24,7 @@
   //   localhost entries are for development; drop them before going public if
   //   you would rather the endpoint answer only the live site.
   "vars": {
-    "GEMINI_MODEL": "gemini-2.5-flash",
+    "GEMINI_MODEL": "gemini-3.8-flash",
     "ALLOWED_ORIGIN": "https://chaitanya.veltore.co.in,http://localhost:5181,http://127.0.0.1:5181"
   },
 

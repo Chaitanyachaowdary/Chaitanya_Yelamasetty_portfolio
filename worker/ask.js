@@ -11,6 +11,15 @@
 //                                    4xx/5xx { "error": "..." }
 // The front end treats ANY non-200 as "fall back to the local rule-based
 // engine", so the assistant never goes dead if this is down or out of quota.
+//
+// ON THE ORIGIN CHECK: Origin is set by the browser and any scripted client can
+// send whatever it likes, so this is NOT authentication. It stops other WEB
+// PAGES embedding this endpoint; it does not stop a determined script. The real
+// protection against quota abuse is the per-IP rate limit below, and the blast
+// radius is bounded anyway — Gemini's free tier does not bill, so the worst case
+// is the assistant falling back to the local engine for the rest of the day. A
+// shared secret would not help: this is called from public JavaScript, so any
+// secret the front end holds is public too.
 
 const MAX_QUESTION = 500;
 
@@ -114,18 +123,35 @@ export default {
     if (request.method !== 'POST') {
       return json({ error: 'Use POST.' }, 405, cors);
     }
-    // Only this site may spend the quota.
-    if (allowed.length && !allowed.includes(origin)) {
+    // Fail CLOSED. The previous form was `allowed.length && !allowed.includes(...)`,
+    // which let every origin through whenever ALLOWED_ORIGIN was unset or empty —
+    // a misconfiguration silently removed the gate instead of tripping it.
+    if (!allowed.length) {
+      console.error(JSON.stringify({ message: 'ALLOWED_ORIGIN is not configured' }));
+      return json({ error: 'Not configured.' }, 500, cors);
+    }
+    if (!allowed.includes(origin)) {
       return json({ error: 'Origin not allowed.' }, 403, cors);
     }
 
     // Rate limit per visitor IP, so one person cannot drain the daily quota.
-    if (env.RATE_LIMITER) {
-      const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
-      const { success } = await env.RATE_LIMITER.limit({ key: ip });
-      if (!success) {
-        return json({ error: 'Too many questions, please slow down.' }, 429, cors);
-      }
+    //
+    // Required, not optional: skipping the limiter when the binding is missing
+    // meant a redeploy that dropped it would quietly remove all throttling.
+    if (!env.RATE_LIMITER) {
+      console.error(JSON.stringify({ message: 'RATE_LIMITER binding is missing' }));
+      return json({ error: 'Not configured.' }, 500, cors);
+    }
+    // Cloudflare always sets this on real traffic. Its absence means the request
+    // did not arrive the normal way, so refuse rather than bucket every such
+    // caller under one shared 'unknown' key that they could all hide behind.
+    const ip = request.headers.get('CF-Connecting-IP');
+    if (!ip) {
+      return json({ error: 'Cannot identify caller.' }, 400, cors);
+    }
+    const { success } = await env.RATE_LIMITER.limit({ key: ip });
+    if (!success) {
+      return json({ error: 'Too many questions, please slow down.' }, 429, cors);
     }
 
     let question = '';
@@ -147,12 +173,17 @@ export default {
       return json({ error: 'Assistant is not configured yet.' }, 503, cors);
     }
 
-    const model = env.GEMINI_MODEL || 'gemini-2.5-flash';
+    const model = env.GEMINI_MODEL || 'gemini-3.8-flash';
     const url =
       `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
 
-    try {
-      const res = await fetch(url, {
+    // One retry on a transient upstream failure. Gemini's free tier returns 503
+    // "experiencing high demand" and 429 under load; both clear in well under a
+    // second, and without this a visitor sees the fallback answer for what is
+    // really a blip. Only these two codes retry — a 400 is our bug and retrying
+    // it just doubles the latency before the same error.
+    const callGemini = async () =>
+      fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -161,14 +192,31 @@ export default {
         body: JSON.stringify({
           systemInstruction: { parts: [{ text: SYSTEM }] },
           contents: [{ role: 'user', parts: [{ text: question }] }],
-          generationConfig: { temperature: 0.4, maxOutputTokens: 400 },
+          generationConfig: {
+            temperature: 0.4,
+            // Headroom, because thinking tokens are billed against this budget.
+            maxOutputTokens: 1200,
+            // Flash models from 2.5 onward think by default, and those tokens
+            // count towards maxOutputTokens — at 400 the budget was spent before
+            // any prose was emitted, which truncated answers mid-sentence and
+            // returned nothing at all for longer questions. This is a two-line
+            // lookup over a fixed profile; it does not need to deliberate.
+            thinkingConfig: { thinkingBudget: 0 },
+          },
         }),
       });
+
+    try {
+      let res = await callGemini();
+      if (res.status === 503 || res.status === 429) {
+        await new Promise((r) => setTimeout(r, 600));
+        res = await callGemini();
+      }
 
       if (!res.ok) {
         const detail = await res.text();
         console.error(
-          JSON.stringify({ message: 'gemini request failed', status: res.status, detail: detail.slice(0, 300) })
+          JSON.stringify({ message: 'gemini request failed', model, status: res.status, detail: detail.slice(0, 300) })
         );
         return json({ error: 'Assistant is unavailable.' }, 502, cors);
       }
@@ -180,7 +228,13 @@ export default {
         .trim();
 
       if (!answer) {
-        console.error(JSON.stringify({ message: 'gemini returned no text' }));
+        console.error(
+          JSON.stringify({
+            message: 'gemini returned no text',
+            finishReason: data?.candidates?.[0]?.finishReason,
+            usage: data?.usageMetadata,
+          })
+        );
         return json({ error: 'Assistant returned nothing.' }, 502, cors);
       }
       return json({ answer }, 200, cors);
