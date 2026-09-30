@@ -3,22 +3,70 @@
 @tailwind utilities;
 
 @layer base {
+  /* ------------------------------------------------------------------ theme
+     Space-separated RGB channels so Tailwind can apply its own alpha, e.g.
+     bg-primary/50. Dark is the default; [data-theme="light"] overrides it.
+     Every value here is checked against WCAG AA in both directions. */
+  :root,
+  :root[data-theme='dark'] {
+    --c-primary: 11 17 32; /* page background */
+    --c-secondary: 22 30 46; /* cards */
+    --c-surface: 28 38 56;
+    --c-accent: 56 189 248;
+    --c-accent-hover: 14 165 233;
+    --c-text: 241 245 249; /* primary text  — 17.19:1 on page bg */
+    --c-muted: 148 163 184; /* secondary text —  7.34:1 on page bg */
+    --c-dark: 2 6 23;
+    --c-line: 255 255 255; /* hairline borders, used at low alpha */
+    --c-elevated: 255 255 255; /* faint raised fills, used at low alpha */
+    --c-code-bg: 15 23 41;
+    /* gradient-text ramp: near-white -> sky -> indigo, for a dark page */
+    --g-1: #f1f5f9;
+    --g-2: #38bdf8;
+    --g-3: #818cf8;
+    color-scheme: dark;
+  }
+
+  :root[data-theme='light'] {
+    --c-primary: 248 250 252;
+    --c-secondary: 255 255 255;
+    --c-surface: 241 245 249;
+    --c-accent: 3 105 161; /* darkened so it clears 4.5:1 on white */
+    --c-accent-hover: 7 89 133;
+    --c-text: 15 23 42; /* 17.06:1 on page bg */
+    --c-muted: 71 85 105; /*  7.24:1 on page bg */
+    --c-dark: 226 232 240;
+    --c-line: 15 23 42;
+    --c-elevated: 15 23 42;
+    --c-code-bg: 241 245 249;
+    /* darkened ramp so headings stay legible on a light page */
+    --g-1: #0f172a;
+    --g-2: #0369a1;
+    --g-3: #4338ca;
+    color-scheme: light;
+  }
+
   html {
     scroll-behavior: smooth;
   }
   body {
     @apply bg-primary text-light-gray antialiased;
+    /* No colour transition here. When the transitioned property resolves through
+       a custom property, changing that variable does not reliably restart the
+       transition — body kept painting the previous theme's background while
+       --c-primary had already flipped. Switching instantly is also kinder to
+       anyone who asked for reduced motion. */
   }
 
   /* Modern text selection */
   ::selection {
-    background: rgba(56, 189, 248, 0.3);
-    color: #f1f5f9;
+    background: rgb(var(--c-accent) / 0.3);
+    color: rgb(var(--c-text));
   }
 
   /* Accessible, on-brand focus rings */
   :focus-visible {
-    outline: 2px solid #38bdf8;
+    outline: 2px solid rgb(var(--c-accent));
     outline-offset: 2px;
     border-radius: 4px;
   }
@@ -30,30 +78,44 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #0f172a;
+  background: rgb(var(--c-secondary));
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #38bdf8, #6366f1);
+  background: linear-gradient(180deg, rgb(var(--c-accent)), rgb(var(--c-accent-hover)));
   border-radius: 8px;
-  border: 2px solid #0f172a;
+  border: 2px solid rgb(var(--c-secondary));
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #0ea5e9, #4f46e5);
+  background: linear-gradient(180deg, rgb(var(--c-accent-hover)), rgb(var(--c-accent)));
 }
 
 /* Glassmorphism Utilities */
 .glass {
-  background: rgba(15, 23, 42, 0.7);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  /* Was hardcoded dark navy with a white hairline: in light mode that painted a
+     dark bar under dark nav text, which is what made the header unreadable. */
+  background: rgb(var(--c-secondary) / 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgb(var(--c-line) / 0.12);
 }
 
 /* Animated gradient text — flowing aurora */
+/* Gradient text is driven by CSS variables so it can be re-tuned per theme.
+   The dark-theme ramp runs through near-white and sky-400; on a light page that
+   same ramp is almost invisible, and because the fill is transparent with
+   background-clip:text, automated contrast checkers cannot see the problem —
+   axe reported zero violations while the surname was unreadable. */
 .text-gradient {
-  background: linear-gradient(120deg, #f1f5f9 10%, #38bdf8 35%, #818cf8 55%, #38bdf8 75%, #f1f5f9 95%);
+  background: linear-gradient(
+    120deg,
+    var(--g-1) 10%,
+    var(--g-2) 35%,
+    var(--g-3) 55%,
+    var(--g-2) 75%,
+    var(--g-1) 95%
+  );
   background-size: 250% auto;
   -webkit-background-clip: text;
   background-clip: text;
@@ -63,7 +125,7 @@
 }
 
 .text-gradient-accent {
-  background: linear-gradient(120deg, #38bdf8, #818cf8, #38bdf8);
+  background: linear-gradient(120deg, var(--g-2), var(--g-3), var(--g-2));
   background-size: 200% auto;
   -webkit-background-clip: text;
   background-clip: text;
@@ -80,14 +142,18 @@
 
 /* Soft accent glow used on hover */
 .glow-accent {
-  box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.1), 0 8px 30px -10px rgba(56, 189, 248, 0.35);
+  box-shadow: 0 0 0 1px rgb(var(--c-accent) / 0.1), 0 8px 30px -10px rgb(var(--c-accent) / 0.35);
 }
 
 /* Premium card surface used across the redesign */
 .card {
   position: relative;
-  background: linear-gradient(160deg, rgba(28, 38, 56, 0.7), rgba(11, 17, 32, 0.5));
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: linear-gradient(
+    160deg,
+    rgb(var(--c-surface) / 0.7),
+    rgb(var(--c-primary) / 0.5)
+  );
+  border: 1px solid rgb(var(--c-line) / 0.08);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-radius: 1.25rem;
@@ -110,9 +176,9 @@
   z-index: 0;
 }
 .card:hover {
-  border-color: rgba(56, 189, 248, 0.35);
+  border-color: rgb(var(--c-accent) / 0.35);
   transform: translateY(-3px);
-  box-shadow: 0 20px 40px -24px rgba(56, 189, 248, 0.3);
+  box-shadow: 0 20px 40px -24px rgb(var(--c-accent) / 0.3);
 }
 .card:hover::before {
   opacity: 1;
@@ -124,7 +190,7 @@
 /* Subtle hairline divider */
 .hairline {
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+  background: linear-gradient(90deg, transparent, rgb(var(--c-line) / 0.12), transparent);
 }
 
 /* Fine grain overlay for depth (premium film texture) */
@@ -138,13 +204,39 @@
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* Respect reduced motion — freeze the animated gradients */
+/* Respect reduced motion.
+   framer-motion is covered by <MotionConfig reducedMotion="user">, but plain CSS
+   animations are not — Tailwind's animate-ping / animate-bounce / animate-pulse
+   keep looping forever regardless. This stops all of them, which also keeps the
+   looping indicators out of WCAG 2.2.2 territory for anyone who has asked for
+   less motion. */
 @media (prefers-reduced-motion: reduce) {
-  .text-gradient,
-  .text-gradient-accent {
-    animation: none;
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
   html {
     scroll-behavior: auto;
   }
+}
+
+/* Aurora mesh drift for the hero backdrop (src/components/ParticleField.jsx).
+   Slow, large-amplitude transforms only — no opacity or colour churn — so the
+   compositor handles it and the CPU stays out of it. The global
+   prefers-reduced-motion rule above stops these entirely. */
+@keyframes aurora-a {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50%      { transform: translate3d(6%, 8%, 0) scale(1.12); }
+}
+@keyframes aurora-b {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1.05); }
+  50%      { transform: translate3d(-8%, 6%, 0) scale(0.95); }
+}
+@keyframes aurora-c {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(0.98); }
+  50%      { transform: translate3d(5%, -7%, 0) scale(1.1); }
 }

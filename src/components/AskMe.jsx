@@ -1,17 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { answer, SUGGESTIONS, followups } from '../lib/answerEngine';
+import useOverlayLock from '../lib/useOverlayLock';
 
 const SpeechRec = typeof window !== 'undefined' ? (window.SpeechRecognition || window.webkitSpeechRecognition) : null;
 const ttsSupported = typeof window !== 'undefined' && 'speechSynthesis' in window;
 
 const AskMe = () => {
   const [open, setOpen] = useState(false);
+  useOverlayLock(open);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [typing, setTyping] = useState(false);
   const [listening, setListening] = useState(false);
   const [voiceReplies, setVoiceReplies] = useState(false);
+  const [speechNote, setSpeechNote] = useState('');
   const inputRef = useRef(null);
   const bodyRef = useRef(null);
   const recRef = useRef(null);
@@ -41,12 +44,25 @@ const AskMe = () => {
 
   // stop voice when the panel closes
   useEffect(() => {
-    if (!open) { stopSpeaking(); try { recRef.current?.stop(); } catch { /* noop */ } setListening(false); }
+    if (!open) { stopSpeaking(); try { recRef.current?.stop(); } catch { /* noop */ } setListening(false); setSpeechNote(''); }
   }, [open]);
 
   const startListening = () => {
-    if (!SpeechRec) return;
-    if (listening) { try { recRef.current?.stop(); } catch { /* noop */ } return; }
+    // Say so rather than doing nothing: Firefox has no Web Speech recognition,
+    // and a dead button with no explanation reads as a broken site.
+    if (!SpeechRec) {
+      setSpeechNote('Voice input is not supported in this browser. Try Chrome or Edge, or type your question.');
+      return;
+    }
+
+    // Always able to get out of the listening state, even if the recogniser has
+    // already gone away.
+    if (listening) {
+      try { recRef.current?.stop(); } catch { /* noop */ }
+      setListening(false);
+      return;
+    }
+
     const rec = new SpeechRec();
     rec.lang = 'en-US';
     rec.interimResults = false;
@@ -57,11 +73,28 @@ const AskMe = () => {
       ask(transcript);
     };
     rec.onend = () => setListening(false);
-    rec.onerror = () => setListening(false);
+    rec.onerror = (e) => {
+      setListening(false);
+      setSpeechNote(
+        e?.error === 'not-allowed' || e?.error === 'service-not-allowed'
+          ? 'Microphone access was blocked. Allow it in your browser settings, or type instead.'
+          : 'Could not hear anything. Try again, or type your question.'
+      );
+    };
     recRef.current = rec;
-    setListening(true);
+    setSpeechNote('');
     stopSpeaking();
-    rec.start();
+
+    // start() throws synchronously if the recogniser is already running or the
+    // device is unavailable. Setting the flag first left the button stuck on
+    // "Stop listening" with no way back.
+    try {
+      rec.start();
+      setListening(true);
+    } catch {
+      setListening(false);
+      setSpeechNote('Voice input could not start. Try again, or type your question.');
+    }
   };
 
   useEffect(() => {
@@ -77,20 +110,58 @@ const AskMe = () => {
     bodyRef.current?.scrollTo({ top: bodyRef.current.scrollHeight, behavior: 'smooth' });
   }, [messages, typing]);
 
+  // Ask the Worker first, fall back to the local rule-based engine.
+  //
+  // The fallback is the point: the endpoint may be unset (no VITE_ASK_ENDPOINT),
+  // unconfigured (no key yet), rate-limited, out of free-tier quota, or simply
+  // down — and in every one of those cases the assistant must still answer
+  // rather than show an error. The local engine also keeps the action buttons
+  // ("See Projects", "Email Chaitanya"), which the model cannot produce.
+  const ENDPOINT = import.meta.env.VITE_ASK_ENDPOINT;
+
+  const askRemote = async (q) => {
+    if (!ENDPOINT) return null;
+    try {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 12000);
+      const res = await fetch(ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question: q }),
+        signal: controller.signal,
+      });
+      clearTimeout(timer);
+      if (!res.ok) return null;
+      const data = await res.json();
+      return typeof data?.answer === 'string' && data.answer.trim() ? data.answer.trim() : null;
+    } catch {
+      return null; // network error, timeout, CORS — fall back silently
+    }
+  };
+
   const ask = (text) => {
     const q = (text ?? input).trim();
     if (!q) return;
     setMessages((m) => [...m, { role: 'user', text: q }]);
     setInput('');
     setTyping(true);
+
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const delay = reduced ? 0 : 450;
-    setTimeout(() => {
-      setTyping(false);
-      const a = answer(q);
-      setMessages((m) => [...m, { role: 'bot', ...a }]);
-      if (voiceRepliesRef.current) speak(a.text);
-    }, delay);
+    const local = answer(q); // computed up front so it is ready either way
+
+    askRemote(q).then((remote) => {
+      const settle = () => {
+        setTyping(false);
+        // Keep the local engine's action buttons alongside the model's text.
+        const a = remote ? { ...local, text: remote } : local;
+        setMessages((m) => [...m, { role: 'bot', ...a }]);
+        if (voiceRepliesRef.current) speak(a.text);
+      };
+      // Without a remote call the reply is instant, which reads as canned; the
+      // short delay is deliberate. A real round trip has already taken time.
+      if (remote || reduced) settle();
+      else setTimeout(settle, 450);
+    });
   };
 
   const toggleVoice = () => {
@@ -137,7 +208,7 @@ const AskMe = () => {
               onClick={(e) => e.stopPropagation()}
             >
               {/* Header */}
-              <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
+              <div className="flex items-center justify-between px-5 py-4 border-b border-line/15">
                 <div className="flex items-center gap-3">
                   <span className="relative flex h-9 w-9 items-center justify-center rounded-full bg-accent/15 text-accent">
                     <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
@@ -170,10 +241,10 @@ const AskMe = () => {
               </div>
 
               {/* Messages */}
-              <div ref={bodyRef} className="flex-grow overflow-y-auto px-4 py-4 space-y-3">
+              <div ref={bodyRef} data-lenis-prevent className="flex-grow overflow-y-auto px-4 py-4 space-y-3">
                 {messages.map((m, i) => (
                   <div key={i} className={m.role === 'user' ? 'flex justify-end' : 'flex justify-start'}>
-                    <div className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${m.role === 'user' ? 'bg-accent text-primary font-medium' : 'bg-white/5 text-light-gray border border-white/10'}`}>
+                    <div className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${m.role === 'user' ? 'bg-accent text-primary font-medium' : 'bg-elevated/[0.06] text-light-gray border border-line/15'}`}>
                       <p className="whitespace-pre-line">{m.text}</p>
                       {m.actions?.length > 0 && (
                         <div className="flex flex-wrap gap-2 mt-3">
@@ -193,7 +264,7 @@ const AskMe = () => {
                 ))}
                 {typing && (
                   <div className="flex justify-start">
-                    <div className="bg-white/5 border border-white/10 rounded-2xl px-4 py-3 flex gap-1">
+                    <div className="bg-elevated/[0.06] border border-line/15 rounded-2xl px-4 py-3 flex gap-1">
                       <span className="h-1.5 w-1.5 rounded-full bg-medium-gray animate-bounce" style={{ animationDelay: '0ms' }} />
                       <span className="h-1.5 w-1.5 rounded-full bg-medium-gray animate-bounce" style={{ animationDelay: '120ms' }} />
                       <span className="h-1.5 w-1.5 rounded-full bg-medium-gray animate-bounce" style={{ animationDelay: '240ms' }} />
@@ -207,10 +278,10 @@ const AskMe = () => {
                   if (fu.length === 0) return null;
                   return (
                     <div className="pt-1">
-                      <p className="text-[11px] text-medium-gray/70 mb-2 ml-1">You might also ask</p>
+                      <p className="text-[11px] text-medium-gray mb-2 ml-1">You might also ask</p>
                       <div className="flex flex-wrap gap-2">
                         {fu.map((q) => (
-                          <button key={q} onClick={() => ask(q)} className="text-xs text-medium-gray border border-white/10 rounded-full px-3 py-1.5 hover:text-accent hover:border-accent/40 transition-colors">
+                          <button key={q} onClick={() => ask(q)} className="text-xs text-medium-gray border border-line/15 rounded-full px-3 py-1.5 hover:text-accent hover:border-accent/40 transition-colors">
                             {q}
                           </button>
                         ))}
@@ -224,17 +295,28 @@ const AskMe = () => {
               {messages.length <= 1 && (
                 <div className="px-4 pb-2 flex flex-wrap gap-2">
                   {SUGGESTIONS.map((s) => (
-                    <button key={s} onClick={() => ask(s)} className="text-xs text-medium-gray border border-white/10 rounded-full px-3 py-1.5 hover:text-accent hover:border-accent/40 transition-colors">
+                    <button key={s} onClick={() => ask(s)} className="text-xs text-medium-gray border border-line/15 rounded-full px-3 py-1.5 hover:text-accent hover:border-accent/40 transition-colors">
                       {s}
                     </button>
                   ))}
                 </div>
               )}
 
+              {/* Why voice input did nothing. role=status so a screen reader is
+                  told too, instead of the failure being purely visual. */}
+              {speechNote && (
+                <p
+                  role="status"
+                  className="px-4 pb-1 pt-2 text-xs text-amber-300"
+                >
+                  {speechNote}
+                </p>
+              )}
+
               {/* Input */}
               <form
                 onSubmit={(e) => { e.preventDefault(); ask(); }}
-                className="flex items-center gap-2 p-3 border-t border-white/10"
+                className="flex items-center gap-2 p-3 border-t border-line/15"
               >
                 {SpeechRec && (
                   <button
@@ -242,7 +324,7 @@ const AskMe = () => {
                     onClick={startListening}
                     aria-label={listening ? 'Stop listening' : 'Speak your question'}
                     title="Speak your question"
-                    className={`shrink-0 relative h-10 w-10 flex items-center justify-center rounded-full transition-colors ${listening ? 'bg-accent text-primary' : 'bg-primary/60 border border-white/10 text-medium-gray hover:text-accent hover:border-accent/40'}`}
+                    className={`shrink-0 relative h-10 w-10 flex items-center justify-center rounded-full transition-colors ${listening ? 'bg-accent text-primary' : 'bg-primary/60 border border-line/15 text-medium-gray hover:text-accent hover:border-accent/40'}`}
                   >
                     {listening && <span className="absolute inset-0 rounded-full bg-accent/40 animate-ping" />}
                     <svg className="relative h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M19 11a7 7 0 01-14 0m7 7v3m0-3a4 4 0 01-4-4V7a4 4 0 118 0v4a4 4 0 01-4 4z" /></svg>
@@ -254,7 +336,7 @@ const AskMe = () => {
                   onChange={(e) => setInput(e.target.value)}
                   placeholder={listening ? 'Listening…' : 'Type or tap the mic…'}
                   aria-label="Ask a question"
-                  className="flex-grow min-w-0 bg-primary/60 border border-white/10 rounded-full px-4 py-2.5 text-sm text-light-gray placeholder-medium-gray focus:outline-none focus:border-accent/50"
+                  className="flex-grow min-w-0 bg-primary/60 border border-line/15 rounded-full px-4 py-2.5 text-sm text-light-gray placeholder-medium-gray focus:outline-none focus:border-accent/50"
                 />
                 <button type="submit" aria-label="Send" className="shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-accent text-primary hover:bg-accent-hover transition-colors">
                   <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M12 5l7 7-7 7" /></svg>

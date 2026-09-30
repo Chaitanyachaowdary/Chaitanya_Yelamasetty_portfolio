@@ -2,10 +2,16 @@
 import React from 'react';
 import Section from './Section';
 import { motion } from 'framer-motion';
+import CodeCard from './CodeCard';
 
 const About = () => {
     return (
-        <Section id="about" title="About Me">
+        <Section
+            id="about"
+            title="About Me"
+            eyebrow="Who I am"
+            intro="A full-stack engineer who ships production software end to end, and treats accessibility as a build requirement rather than a final pass."
+        >
             <div className="grid md:grid-cols-5 gap-12 items-center">
                 <motion.div
                     className="md:col-span-3 text-lg text-medium-gray space-y-6 leading-relaxed"
@@ -63,6 +69,8 @@ const About = () => {
                     </div>
                 </motion.div>
             </div>
+
+            <CodeCard />
         </Section>
     );
 };

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import ThemeToggle from './ThemeToggle';
 
 // Reusable component for desktop navigation links
 const NavLink = ({ href, children, active }) => (
@@ -113,6 +114,7 @@ const Header = () => {
                 <span>Search</span>
                 <kbd className="text-[10px] bg-secondary border border-secondary rounded px-1.5 py-0.5">⌘K</kbd>
               </button>
+              <ThemeToggle />
               <a href="#contact" className="px-4 py-2 bg-accent text-primary font-bold rounded-md hover:bg-accent-hover transition-colors duration-300 shadow-md">
                 Contact Me
               </a>
@@ -146,10 +148,11 @@ const Header = () => {
           </nav>
 
           {/* Mobile Menu Button (Hamburger/Close Icon) */}
-          <div className="lg:hidden">
+          <div className="lg:hidden flex items-center gap-1">
+            <ThemeToggle />
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-light-gray hover:text-accent focus:outline-none"
+              className="inline-flex h-11 w-11 items-center justify-center text-light-gray hover:text-accent focus:outline-none"
               aria-label="Toggle menu"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

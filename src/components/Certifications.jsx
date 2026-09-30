@@ -21,7 +21,12 @@ const CertificationItem = ({ cert }) => (
 
 const Certifications = () => {
   return (
-    <Section id="certifications" title="Certifications">
+    <Section
+      id="certifications"
+      title="Certifications"
+      eyebrow="Credentials"
+      intro="Courses I finished and kept using, alongside continuous self-directed learning."
+    >
       <div className="max-w-3xl mx-auto space-y-4">
         {CERTIFICATIONS.map((cert) => (
           <CertificationItem key={cert.name} cert={cert} />

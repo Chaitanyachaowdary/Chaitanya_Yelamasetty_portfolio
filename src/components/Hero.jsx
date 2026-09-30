@@ -1,6 +1,5 @@
 import React from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { ReactTyped } from 'react-typed';
 import { EXPERIENCE, PROJECTS, CERTIFICATIONS, SKILLS } from '../constants.jsx';
 import CountUp from './CountUp';
 import Magnetic from './Magnetic';
@@ -48,14 +47,14 @@ const Hero = () => {
         <div className="lg:col-span-7">
           <motion.div
             {...rise(0)}
-            className="inline-flex items-center gap-2.5 text-xs sm:text-sm font-medium text-medium-gray bg-secondary/50 border border-white/10 backdrop-blur-sm rounded-full px-3.5 py-1.5 mb-8"
+            className="inline-flex items-center gap-2.5 text-xs sm:text-sm font-medium text-medium-gray bg-secondary/50 border border-line/15 backdrop-blur-sm rounded-full px-3.5 py-1.5 mb-8"
           >
             <span className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 animate-ping" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
             </span>
             <span className="text-light-gray">Available — Full-time &amp; Freelance</span>
-            <span className="text-white/20 hidden sm:inline">·</span>
+            <span className="text-medium-gray/30 hidden sm:inline">·</span>
             <span className="hidden sm:inline">Bengaluru · Remote · Hybrid · Onsite</span>
           </motion.div>
 
@@ -67,18 +66,22 @@ const Hero = () => {
             <span className="block text-gradient">Yelamasetty</span>
           </motion.h1>
 
-          <motion.div
+          {/* One claim, stated once. The cycling job-title rotator that used to
+              live here is a pattern any developer could write; this says the one
+              thing that is specific to him. It also removes the last piece of
+              indefinite motion on the page (WCAG 2.2.2). */}
+          <motion.p
             {...rise(0.16)}
-            className="text-xl sm:text-2xl lg:text-3xl font-bold text-medium-gray mb-6 min-h-[36px]"
+            className="text-xl sm:text-2xl lg:text-3xl font-bold text-light-gray mb-4 max-w-xl leading-snug"
           >
-            <ReactTyped
-              strings={['Full Stack & DevOps Engineer', 'React & Node.js Developer', 'Accessibility-First Products', 'Problem Solver']}
-              typeSpeed={45}
-              backSpeed={28}
-              backDelay={1600}
-              loop
-            />
-          </motion.div>
+            I build software that blind people use to do their jobs.
+          </motion.p>
+          <motion.p
+            {...rise(0.2)}
+            className="text-base sm:text-lg text-medium-gray mb-6 max-w-xl"
+          >
+            Full Stack &amp; DevOps Engineer · Accessibility-first · Bengaluru
+          </motion.p>
 
           <motion.p {...rise(0.24)} className="text-medium-gray text-base sm:text-lg max-w-xl mb-9 leading-relaxed">
             I build and ship accessibility-first, production-scale software end to end —
@@ -101,7 +104,7 @@ const Hero = () => {
             <Magnetic>
               <a
                 href="#contact"
-                className="inline-block px-7 py-3.5 border border-white/15 text-light-gray text-base font-semibold rounded-full hover:border-accent/60 hover:text-accent transition-colors duration-300"
+                className="inline-block px-7 py-3.5 border border-line/20 text-light-gray text-base font-semibold rounded-full hover:border-accent/60 hover:text-accent transition-colors duration-300"
               >
                 Let's talk
               </a>
@@ -135,7 +138,7 @@ const Hero = () => {
               </span>
             </div>
             <div className="flex items-center gap-3">
-              {companyLogo && <img src={companyLogo} alt={`${current.company} logo`} className="w-11 h-11 rounded-lg object-contain bg-white/5 p-1 border border-white/10" />}
+              {companyLogo && <img src={companyLogo} alt={`${current.company} logo`} className="w-11 h-11 rounded-lg object-contain bg-elevated/[0.06] p-1 border border-line/15" />}
               <div>
                 <p className="text-light-gray font-bold leading-tight">{current.role}</p>
                 <p className="text-medium-gray text-sm">{current.company} · {current.period}</p>

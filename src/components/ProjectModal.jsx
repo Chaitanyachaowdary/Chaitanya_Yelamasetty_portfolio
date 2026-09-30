@@ -8,7 +8,9 @@
 //   - page scroll is locked while open
 //   - honours prefers-reduced-motion
 import React, { useCallback, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import useOverlayLock from '../lib/useOverlayLock';
 
 const FOCUSABLE =
   'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
@@ -63,24 +65,27 @@ export default function ProjectModal({ project, onClose }) {
     [onClose]
   );
 
-  // Lock scroll, remember the trigger, restore focus on close.
+  // Freeze the page behind the dialog (body overflow + Lenis).
+  useOverlayLock(open);
+
+  // Remember the trigger, move focus in, and put it back on close.
   useEffect(() => {
     if (!open) return undefined;
     const trigger = document.activeElement;
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
     const t = setTimeout(() => closeRef.current?.focus(), 40);
     return () => {
       clearTimeout(t);
-      document.body.style.overflow = prevOverflow;
-      if (trigger instanceof HTMLElement) trigger.focus();
+      if (trigger instanceof HTMLElement) trigger.focus({ preventScroll: true });
     };
   }, [open]);
 
   const d = project?.details;
   const titleId = 'project-modal-title';
 
-  return (
+  // Rendered into document.body: this component sits inside <Section>, which
+  // framer-motion transforms, and a transformed ancestor would make the fixed
+  // overlay position against that section instead of the viewport.
+  return createPortal(
     <AnimatePresence>
       {open && (
         <motion.div
@@ -98,7 +103,8 @@ export default function ProjectModal({ project, onClose }) {
             role="dialog"
             aria-modal="true"
             aria-labelledby={titleId}
-            className="relative w-full sm:max-w-2xl max-h-[88vh] overflow-y-auto bg-secondary border border-white/10 rounded-t-3xl sm:rounded-3xl shadow-2xl"
+            data-lenis-prevent
+            className="relative w-full sm:max-w-2xl max-h-[88vh] overflow-y-auto bg-secondary border border-line/15 rounded-t-3xl sm:rounded-3xl shadow-2xl"
             initial={reduce ? { opacity: 0 } : { y: 40, opacity: 0, scale: 0.98 }}
             animate={reduce ? { opacity: 1 } : { y: 0, opacity: 1, scale: 1 }}
             exit={reduce ? { opacity: 0 } : { y: 40, opacity: 0, scale: 0.98 }}
@@ -107,7 +113,7 @@ export default function ProjectModal({ project, onClose }) {
             onKeyDown={onKeyDown}
           >
             {/* Cover */}
-            <div className="relative h-40 sm:h-52 overflow-hidden rounded-t-3xl">
+            <div className="relative aspect-[2/1] max-h-56 overflow-hidden rounded-t-3xl">
               <img
                 src={
                   /^https?:/i.test(project.imageUrl)
@@ -115,7 +121,9 @@ export default function ProjectModal({ project, onClose }) {
                     : `${import.meta.env.BASE_URL}${project.imageUrl}`
                 }
                 alt=""
-                className="w-full h-full object-cover"
+                width="1200"
+                height="600"
+                className="w-full h-full object-cover object-top"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-secondary via-secondary/40 to-transparent" />
               <button
@@ -170,7 +178,7 @@ export default function ProjectModal({ project, onClose }) {
                 <Section title="At a glance">
                   <dl className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                     {d.facts.map(({ label, value }) => (
-                      <div key={label} className="rounded-xl border border-white/10 bg-primary/40 px-3 py-2">
+                      <div key={label} className="rounded-xl border border-line/15 bg-primary/40 px-3 py-2">
                         <dt className="text-[11px] uppercase tracking-wider text-medium-gray">{label}</dt>
                         <dd className="text-light-gray font-bold mt-0.5">{value}</dd>
                       </div>
@@ -184,7 +192,7 @@ export default function ProjectModal({ project, onClose }) {
                   {project.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="bg-white/5 border border-white/10 text-medium-gray text-xs font-medium px-2.5 py-1 rounded-full"
+                      className="bg-elevated/[0.06] border border-line/15 text-medium-gray text-xs font-medium px-2.5 py-1 rounded-full"
                     >
                       {tag}
                     </span>
@@ -216,7 +224,7 @@ export default function ProjectModal({ project, onClose }) {
                       href={project.repoUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-white/15 text-light-gray font-semibold hover:border-accent hover:text-accent transition-colors"
+                      className="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-line/20 text-light-gray font-semibold hover:border-accent hover:text-accent transition-colors"
                     >
                       Source code
                     </a>
@@ -227,6 +235,7 @@ export default function ProjectModal({ project, onClose }) {
           </motion.div>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 }

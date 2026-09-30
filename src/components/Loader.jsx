@@ -5,6 +5,7 @@
 // blocks the page — it returns null immediately.
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import useOverlayLock from '../lib/useOverlayLock';
 
 const SEEN_KEY = 'cy_intro_seen';
 
@@ -17,19 +18,17 @@ export default function Loader() {
     try { seen = sessionStorage.getItem(SEEN_KEY) === '1'; } catch { /* ignore */ }
     if (seen || reduce) return; // repeat visit or reduced-motion → no loader
     setShow(true);
-    document.body.style.overflow = 'hidden';
     const t = setTimeout(() => {
       setShow(false);
       try { sessionStorage.setItem(SEEN_KEY, '1'); } catch { /* ignore */ }
     }, 2100);
-    return () => {
-      clearTimeout(t);
-      document.body.style.overflow = '';
-    };
+    return () => clearTimeout(t);
   }, [reduce]);
 
+  useOverlayLock(show);
+
   return (
-    <AnimatePresence onExitComplete={() => { document.body.style.overflow = ''; }}>
+    <AnimatePresence>
       {show && (
         <motion.div
           className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-primary"
@@ -57,7 +56,7 @@ export default function Loader() {
             Full Stack &amp; DevOps Engineer
           </motion.p>
 
-          <div className="mt-8 h-[3px] w-48 sm:w-64 overflow-hidden rounded-full bg-white/10">
+          <div className="mt-8 h-[3px] w-48 sm:w-64 overflow-hidden rounded-full bg-elevated/10">
             <motion.div
               className="h-full rounded-full bg-gradient-to-r from-accent to-indigo-500"
               initial={{ width: '0%' }}

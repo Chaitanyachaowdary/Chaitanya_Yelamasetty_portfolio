@@ -44,6 +44,9 @@ export const SKILLS = {
   cloud: [
     { name: 'AWS', imageUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg' },
     { name: 'Cloudflare', imageUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cloudflare/cloudflare-original.svg' },
+    { name: 'Railway', imageUrl: 'https://cdn.simpleicons.org/railway' },
+    { name: 'Coolify', imageUrl: 'https://cdn.simpleicons.org/coolify' },
+    { name: 'Hostinger', imageUrl: 'https://cdn.simpleicons.org/hostinger' },
     { name: 'Nginx', imageUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nginx/nginx-original.svg' }
   ],
   tools: [
@@ -123,7 +126,45 @@ export const PROJECT_CATEGORIES = ['All', 'Full-stack', 'Frontend', 'AI', 'Mobil
 
 export const PROJECTS = [
   {
+    title: 'Encludo — Accessibility Widget',
+    kind: 'client',
+    description: 'Purple Aware Technologies’ privacy-first accessibility platform, built from scratch. One script tag adds font scaling, contrast modes, a dyslexia-friendly font, AI text simplification, voice assistance and 20-language translation to any website. Under 50 KB gzipped, WCAG 2.2 AA, no third-party tracking. Express API, admin dashboard and widget across a monorepo, running on a self-hosted Coolify instance after consolidating off Railway.',
+    tags: ['TypeScript', 'Express', 'PostgreSQL', 'Redis', 'Docker', 'Coolify', 'CI/CD', 'WCAG 2.2 AA', 'AI', 'SaaS'],
+    category: 'Full-stack',
+    imageUrl: 'encludo.webp',
+    details: {
+      period: '2026',
+      role: 'Building the product from scratch at Purple Aware Technologies — backend, dashboard, widget and the deployment pipeline behind them.',
+      problem:
+        'Most websites are not usable by people with disabilities, and retrofitting each one is slow and expensive. Encludo gives a site the controls its visitors need without rebuilding the site.',
+      built: [
+        'A monorepo carrying three deployables: an Express API, a React admin dashboard, and the embeddable widget itself.',
+        'Self-hosted infrastructure on Coolify for both staging and production — the API in Docker alongside PostgreSQL and Redis — consolidated from an earlier Railway deployment to cut cost and keep the data on our own box.',
+        'Deploys that never fire by accident: automatic deployment is switched off, and a release ships only on request, through a GitHub Actions workflow that runs the full CI gate and a smoke test first, or an explicit redeploy.',
+        'Domains and DNS on Hostinger, so each environment answers on encludo.com rather than a platform-generated hostname.',
+        'Integrated into GarvSe 2.0 as the first consumer, with SPA-safe re-binding so the trigger survives client-side navigation, which the SDK does not handle by default.',
+      ],
+      highlights: [
+        'Font scaling, contrast modes and a dyslexia-friendly font.',
+        'AI text simplification and voice assistance.',
+        'Translation into 20 languages.',
+        'Under 50 KB gzipped, privacy-first, with no third-party tracking.',
+      ],
+      facts: [
+        { label: 'Install', value: 'One script tag' },
+        { label: 'Size', value: 'Under 50 KB' },
+        { label: 'Standard', value: 'WCAG 2.2 AA' },
+        { label: 'Languages', value: '20' },
+        { label: 'Stage', value: 'Open beta' },
+        { label: 'Hosting', value: 'Self-hosted Coolify' },
+      ],
+      note: 'Encludo is a Purple Aware Technologies product built by a team, not a solo project. Currently in open beta.',
+    },
+    liveUrl: 'https://encludo.com/',
+  },
+  {
     title: 'GarvSe 2.0 — Accessibility-First Livelihood Platform',
+    kind: 'client',
     description: 'Monitoring, Evaluation & Learning platform for EnAble India, serving 45 centres across 10 states and 2 UTs. Built WCAG 2.2 AA accessible from the first sprint, because the field officers who use it every day are blind. React 19 and TypeScript front end, Node.js and Hono APIs on PostgreSQL, offline-first desktop and Android builds via Tauri, and a full migration from the legacy system that went live with zero errors.',
     tags: ['React 19', 'TypeScript', 'Node.js', 'Hono', 'Drizzle ORM', 'PostgreSQL', 'Tauri', 'Redis', 'AWS S3', 'Docker', 'WCAG 2.2 AA'],
     category: 'Full-stack',
@@ -149,13 +190,14 @@ export const PROJECTS = [
         { label: 'Offline', value: 'Yes, sync queue' },
         { label: 'Stack', value: 'React 19 · Hono · Postgres' },
       ],
-      note: 'Client project. The source is private, so the link opens the staging environment rather than a repository.',
+      note: 'Client project. The source is private, so the link opens the live application rather than a repository.',
     },
-    liveUrl: 'https://stage.garvse.org/',
-    liveLabel: 'Open staging app',
+    liveUrl: 'https://app.garvse.org/',
+    liveLabel: 'Open live app',
   },
   {
     title: 'GarvSe 1.0 — Centre Data Management',
+    kind: 'client',
     description: 'The production system the programme ran on before 2.0. Added password and email-OTP login, user block and unblock with duplicate detection, pagination and search across every module, and the OpunSeva partner API for external candidate data. Sole maintainer of the reports service, and ran the staging and production deployments.',
     tags: ['React', 'NestJS', 'PostgreSQL', 'REST APIs', 'NATS', 'Production Support'],
     category: 'Full-stack',
@@ -179,43 +221,12 @@ export const PROJECTS = [
       ],
       note: 'Client project on a private repository, now replaced by GarvSe 2.0.',
     },
-  },
-  {
-    title: 'Encludo — Accessibility Widget',
-    description: 'Purple Aware Technologies’ privacy-first accessibility platform. One script tag adds font scaling, contrast modes, a dyslexia-friendly font, AI text simplification, voice assistance and 20-language translation to any website. Under 50 KB gzipped, WCAG 2.2 AA, no third-party tracking. I integrated it into GarvSe 2.0 with SPA-safe re-binding so it survives client-side route changes.',
-    tags: ['JavaScript', 'Web SDK', 'WCAG 2.2 AA', 'AI', 'i18n', 'SaaS'],
-    category: 'Full-stack',
-    imageUrl: 'encludo.webp',
-    details: {
-      period: '2026',
-      role: 'Integration engineer on the consuming side, and part of the team at Purple Aware Technologies that ships it.',
-      problem:
-        'Most websites are not usable by people with disabilities, and retrofitting each one is slow and expensive. Encludo gives a site the controls its visitors need without rebuilding the site.',
-      built: [
-        'Integrated the widget into GarvSe 2.0 behind a single accessibility button in the header.',
-        'Made the integration SPA-safe: the SDK is re-injected on route changes so the trigger keeps working after client-side navigation, which it does not do by default.',
-        'Handled the origin allowlist and the load-order race so the button exists in the DOM before the SDK initialises.',
-      ],
-      highlights: [
-        'Font scaling, contrast modes and a dyslexia-friendly font.',
-        'AI text simplification and voice assistance.',
-        'Translation into 20 languages.',
-        'Under 50 KB gzipped, privacy-first, with no third-party tracking.',
-      ],
-      facts: [
-        { label: 'Install', value: 'One script tag' },
-        { label: 'Size', value: 'Under 50 KB' },
-        { label: 'Standard', value: 'WCAG 2.2 AA' },
-        { label: 'Languages', value: '20' },
-        { label: 'Stage', value: 'Open beta' },
-        { label: 'Maker', value: 'Purple Aware' },
-      ],
-      note: 'Encludo is a Purple Aware Technologies product, not a solo project. My work was the integration and the SPA re-binding fix.',
-    },
-    liveUrl: 'https://encludo.com/',
+    liveUrl: 'https://stage.garvse.org/',
+    liveLabel: 'Open app',
   },
   {
     title: 'EnableU — Accessibility-First Learning Platform',
+    kind: 'personal',
     description: 'A learning platform built so that disability is never the reason someone cannot take the course. Dyslexia-friendly typography and a reading guide, AA-contrast modes, full keyboard navigation, and reduced-motion support, wrapped in a gamified quiz and progress system. Three tiers: a React client, a Node service, and a Python API, with a seven-document architecture and security guide.',
     tags: ['React', 'Node.js', 'Python', 'Flask', 'JWT', 'Tailwind CSS', 'Accessibility'],
     category: 'Full-stack',
@@ -247,6 +258,7 @@ export const PROJECTS = [
   },
   {
     title: 'TinyLink — URL Shortener',
+    kind: 'personal',
     description: 'A working URL shortener on Next.js 15 and TypeScript, backed by PostgreSQL. Create a short link with an optional custom code, then watch the click count climb on the dashboard. Includes per-link stats, copy and delete actions, a redirect route, and a health-check endpoint.',
     tags: ['Next.js', 'TypeScript', 'PostgreSQL', 'Tailwind CSS', 'REST APIs', 'Vercel'],
     category: 'Full-stack',
@@ -277,6 +289,7 @@ export const PROJECTS = [
   },
   {
     title: 'Tech.Care — Patient Dashboard',
+    kind: 'personal',
     description: 'A clinician-facing patient dashboard: a searchable patient list, a six-month blood-pressure chart with systolic and diastolic trends called out against the average, live vitals tiles, a diagnostic list and downloadable lab results. Built with React and Recharts.',
     tags: ['React', 'Recharts', 'Tailwind CSS', 'Data Visualisation', 'Vercel'],
     category: 'Frontend',
@@ -306,6 +319,7 @@ export const PROJECTS = [
   },
   {
     title: 'CineVerse — Movie Streaming SPA',
+    kind: 'personal',
     description: 'A Netflix-style single-page app on the TMDB API. Search the catalogue, browse trending and popular rows, open a detail page, and — once signed in — keep a watchlist, see recently viewed titles and pick a subscription plan. Auth-gated routes, context-based state, and a component library of its own.',
     tags: ['React', 'Vite', 'Tailwind CSS', 'TMDB API', 'Axios', 'React Router', 'Context API'],
     category: 'Frontend',
@@ -336,6 +350,7 @@ export const PROJECTS = [
   },
   {
     title: 'HealthCare+ — Appointment Booking',
+    kind: 'personal',
     description: 'A patient-facing clinic site with real booking behind it: browse services, book an appointment, and sign in as either a patient or an administrator, with separate dashboards for each. React front end with framer-motion, on an Express backend.',
     tags: ['React', 'Express', 'Node.js', 'React Router', 'framer-motion', 'Tailwind CSS'],
     category: 'Full-stack',
@@ -365,6 +380,7 @@ export const PROJECTS = [
   },
   {
     title: 'Kanna — Android AI Assistant',
+    kind: 'personal',
     description: 'A native Android assistant in Kotlin. A wake-word engine listens without a button press, a notification service surfaces replies, and requests go to Gemini. Conversation history lives in an encrypted Room database with its key held in the Android keystore, and the logging policy is explicit about what is kept.',
     tags: ['Kotlin', 'Android', 'Jetpack Compose', 'Room', 'Gemini API', 'MVVM', 'Encryption'],
     category: 'Mobile',
@@ -396,6 +412,7 @@ export const PROJECTS = [
   },
   {
     title: 'WhatsApp Clone',
+    kind: 'personal',
     description: 'Real-time chat application with one-to-one messaging, WhatsApp-inspired responsive UI, and persistent data storage. Deployed using Vercel for seamless accessibility.',
     tags: ['React', 'Tailwind', 'Node.js', 'Socket.io', 'JSON Server', 'Vercel'],
     category: 'Full-stack',
@@ -421,6 +438,7 @@ export const PROJECTS = [
   },
   {
     title: 'Design Declares Clone',
+    kind: 'personal',
     description: 'Built a fully responsive, pixel-perfect clone of the Design Declares website. Implemented scroll-triggered animations, sticky bottom navigation, and smooth user interactions. Deployed on Vercel.',
     tags: ['React.js', 'Tailwind CSS', 'Vercel'],
     category: 'Frontend',
@@ -446,6 +464,7 @@ export const PROJECTS = [
   },
   {
     title: 'Health Care Dashboard',
+    kind: 'client',
     description: 'Developed a React-based healthcare simulation platform as part of a patient project. Enabled interactive training for mental health professionals through AI-powered virtual patient conversations. Deployed using Vercel for seamless accessibility.',
     tags: ['React', 'AI', 'Vercel'],
     category: 'AI',
@@ -470,6 +489,7 @@ export const PROJECTS = [
   },
   {
     title: 'Easy Shop',
+    kind: 'personal',
     description: 'A React.js e-commerce frontend demonstrating authentication, Tailwind CSS styling, API integration, and state management with Redux/Context API.',
     tags: ['React', 'Tailwind CSS', 'Vercel'],
     category: 'Frontend',
@@ -495,6 +515,7 @@ export const PROJECTS = [
   },
   {
     title: 'Cubic Technologies Website',
+    kind: 'client',
     description: 'Developed a static business portfolio website to showcase Cubic Technologies\' services and branding. Designed for responsiveness and ease of navigation, and deployed on Vercel.',
     tags: ['HTML', 'CSS', 'JavaScript', 'Vercel'],
     category: 'Frontend',
@@ -520,6 +541,7 @@ export const PROJECTS = [
   },
   {
     title: 'Veltore — AI Studio Site',
+    kind: 'client',
     description: 'Corporate site for Veltore, an AI-native software studio that runs the veltore.ai career platform. Built as a single static page with Tailwind via CDN, inline Feather icons, and aurora-gradient visual language. Shipped on Cloudflare Pages.',
     tags: ['HTML5', 'Tailwind CSS', 'Cloudflare Pages'],
     category: 'Frontend',
@@ -544,6 +566,7 @@ export const PROJECTS = [
   },
   {
     title: 'ChatGPT Clone',
+    kind: 'personal',
     description: 'A powerful AI chat application powered by the OpenAI API. Features real-time conversation, code highlighting, and a responsive UI mimicking the original ChatGPT experience.',
     tags: ['React', 'OpenAI API', 'Node.js', 'Tailwind CSS'],
     category: 'AI',

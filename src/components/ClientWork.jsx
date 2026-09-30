@@ -7,12 +7,14 @@ const ClientCard = ({ entry, index }) => {
   const { client, initial, accent, logoUrl, project, role, period, deliverables, stack, websiteUrl } = entry;
   const resolvedLogo = logoUrl && !/^https?:/i.test(logoUrl) ? `${import.meta.env.BASE_URL}${logoUrl}` : logoUrl;
 
+  // amount is 'some', not a fraction: a card taller than 5x the viewport could
+  // never reach 0.2 and would stay invisible forever. See Section.jsx.
   return (
     <motion.article
       className="bg-secondary/40 backdrop-blur-sm border border-secondary rounded-2xl p-6 md:p-8 hover:border-accent/50 hover:bg-secondary/60 transition-all duration-300"
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
+      viewport={{ once: true, amount: 'some' }}
       transition={{ duration: 0.5, delay: index * 0.15 }}
     >
       <header className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-5">
@@ -77,7 +79,12 @@ const ClientCard = ({ entry, index }) => {
 
 const ClientWork = () => {
   return (
-    <Section id="clients" title="Client Work">
+    <Section
+      id="clients"
+      title="Client Work"
+      eyebrow="Production delivery"
+      intro="Work shipped for a client and running in production, not a prototype."
+    >
       <div className="max-w-4xl mx-auto space-y-6">
         {CLIENT_WORK.map((entry, i) => (
           <ClientCard key={entry.client + entry.project} entry={entry} index={i} />
