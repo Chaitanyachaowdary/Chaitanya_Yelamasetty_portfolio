@@ -1,0 +1,43 @@
+{
+  // Ask-AI backend for the portfolio. Deploy with:
+  //   cd worker && npx wrangler deploy
+  //
+  // The Gemini key is NOT in this file and must never be. Set it once with:
+  //   npx wrangler secret put GEMINI_API_KEY
+  // Secrets live encrypted on Cloudflare and are not part of this config.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "chaitanya-portfolio-ask",
+  "main": "ask.js",
+
+  // Today's date on creation, per Workers guidance. Bump deliberately, not by habit.
+  "compatibility_date": "2026-09-30",
+  "compatibility_flags": ["nodejs_compat"],
+
+  // Logs on before this ever serves production traffic.
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  },
+
+  // Non-secret configuration.
+  //   ALLOWED_ORIGIN — only these origins may spend the Gemini quota. The
+  //   localhost entries are for development; drop them before going public if
+  //   you would rather the endpoint answer only the live site.
+  "vars": {
+    "GEMINI_MODEL": "gemini-3.8-flash",
+    "ALLOWED_ORIGIN": "https://chaitanya.veltore.co.in,http://localhost:5181,http://127.0.0.1:5181"
+  },
+
+  // 20 questions per minute per IP, so one visitor cannot drain the daily
+  // free-tier allowance. period must be 10 or 60.
+  "ratelimits": [
+    {
+      "name": "RATE_LIMITER",
+      "namespace_id": "1001",
+      "simple": {
+        "limit": 20,
+        "period": 60
+      }
+    }
+  ]
+}

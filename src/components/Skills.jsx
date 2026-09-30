@@ -7,7 +7,7 @@ const SkillBadge = ({ skill, index }) => {
   const { name, imageUrl } = skill;
   return (
     <motion.div
-      className="flex items-center gap-3 px-4 py-2.5 rounded-xl bg-white/[0.03] border border-white/10 hover:border-accent/40 hover:bg-white/[0.06] transition-colors cursor-default"
+      className="flex items-center gap-3 px-4 py-2.5 rounded-xl bg-elevated/[0.04] border border-line/15 hover:border-accent/40 hover:bg-elevated/[0.08] transition-colors cursor-default"
       initial={{ opacity: 0, y: 12 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -27,7 +27,12 @@ const SkillBadge = ({ skill, index }) => {
 
 const Skills = () => {
   return (
-    <Section id="skills" title="My Tech Stack">
+    <Section
+      id="skills"
+      title="My Tech Stack"
+      eyebrow="What I build with"
+      intro="Grouped by where each tool sits in the stack, from the interface through to deployment and testing."
+    >
       {Object.entries(SKILLS).map(([category, skills], categoryIndex) => (
         <motion.div
           key={category}

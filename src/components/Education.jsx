@@ -28,7 +28,12 @@ const EducationItem = ({ item }) => {
 
 const Education = () => {
     return (
-        <Section id="education" title="My Education">
+        <Section
+            id="education"
+            title="My Education"
+            eyebrow="Foundations"
+            intro="A computer-science-adjacent engineering degree, and the schooling behind it."
+        >
             <div className="max-w-3xl mx-auto relative">
                 <div className="space-y-8">
                     {EDUCATION.map((item) => (

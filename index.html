@@ -2,26 +2,44 @@
 <html lang="en">
 
 <head>
+  <!-- Resolve the theme BEFORE first paint, otherwise a light-theme visitor
+       sees a dark flash while the bundle loads. Stored choice wins over the OS
+       preference; both are wrapped because storage can be blocked. -->
+  <script>
+    (function () {
+      try {
+        var stored = null;
+        try { stored = localStorage.getItem('cy_theme'); } catch (e) {}
+        var prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+        var theme = stored || (prefersLight ? 'light' : 'dark');
+        document.documentElement.setAttribute('data-theme', theme);
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'light' ? '#f8fafc' : '#0b1120');
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0b1120" />
   <link rel="icon" type="image/png" href="/cy-favicon-96.png" />
   <link rel="apple-touch-icon" href="/cy-favicon-96.png" />
 
-  <title>Chaitanya Yelamasetty — Full Stack Developer</title>
-  <meta name="description" content="Portfolio of Chaitanya Yelamasetty — Full Stack Web Developer & UI/UX Designer skilled in React, Python, FastAPI, Spring Boot and SQL. Available for full-time roles and freelance projects. See projects, experience, and ways to get in touch." />
+  <title>Chaitanya Yelamasetty — Full Stack & DevOps Engineer</title>
+  <meta name="description" content="Portfolio of Chaitanya Yelamasetty — Full Stack & DevOps Engineer building accessibility-first, production-scale software with React, Node.js, NestJS, PostgreSQL, AWS and Docker. Open to remote roles. See projects, experience, and ways to get in touch." />
   <meta name="author" content="Chaitanya Yelamasetty" />
 
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Chaitanya Yelamasetty — Full Stack Developer" />
-  <meta property="og:description" content="Portfolio of Chaitanya Yelamasetty — Full Stack Web Developer & UI/UX Designer skilled in React, Python, FastAPI, Spring Boot and SQL." />
+  <meta property="og:title" content="Chaitanya Yelamasetty — Full Stack & DevOps Engineer" />
+  <meta property="og:description" content="Portfolio of Chaitanya Yelamasetty — Full Stack & DevOps Engineer building accessibility-first products with React, Node.js, NestJS, PostgreSQL, AWS and Docker." />
   <meta property="og:image" content="/og-image.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
 
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Chaitanya Yelamasetty — Full Stack Developer" />
-  <meta name="twitter:description" content="Portfolio of Chaitanya Yelamasetty — Aspiring Full Stack Web Developer." />
+  <meta name="twitter:title" content="Chaitanya Yelamasetty — Full Stack & DevOps Engineer" />
+  <meta name="twitter:description" content="Portfolio of Chaitanya Yelamasetty — Full Stack & DevOps Engineer, open to remote roles." />
   <meta name="twitter:image" content="/og-image.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -34,22 +52,22 @@
       "@type": "Person",
       "name": "Chaitanya Yelamasetty",
       "alternateName": "Chaitanya Chaowdary",
-      "jobTitle": ["Full Stack Web Developer", "UI/UX Designer", "Freelance Developer"],
-      "seeks": "Full-time roles and freelance projects in web development and UI/UX design",
+      "jobTitle": ["Full Stack & DevOps Engineer", "Full Stack Developer", "React & Node.js Engineer"],
+      "seeks": "Remote full-stack and DevOps engineering roles",
       "url": "https://chaitanya-yelamasetty-portfolio.vercel.app/",
       "image": "https://chaitanya-yelamasetty-portfolio.vercel.app/my-avatar.png",
-      "email": "mailto:ychaitanya317@gmail.com",
+      "email": "mailto:chaitanyachowdary4e3@gmail.com",
       "telephone": "+91-7993856293",
       "sameAs": [
         "https://github.com/Chaitanyachaowdary",
         "https://www.linkedin.com/in/chaitanya-yelamasetty",
-        "https://x.com/Chaitanya154975",
+        "https://x.com/chaitanyatarak9",
         "https://www.instagram.com/chaitanya_chowdary.317"
       ],
       "knowsAbout": ["React", "Vite", "TypeScript", "Node.js", "Hono", "Zod", "Drizzle ORM", "PostgreSQL", "Redis", "BullMQ", "Amazon S3", "Next.js", "Java", "Python", "Spring Boot", "SQL", "Docker", "AWS", "UI/UX Design"],
       "alumniOf": {
         "@type": "CollegeOrUniversity",
-        "name": "JNTU Anantapur (SVPCET)"
+        "name": "Sri Venkatesa Perumal College of Engineering & Technology"
       }
     }
   </script>

@@ -20,13 +20,13 @@ const ExperienceItem = ({ role, company, logoUrl, accent, period, description, i
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-3">
                 <div className="flex items-center gap-3">
                     {resolvedLogo ? (
-                        <img src={resolvedLogo} alt={`${company} logo`} className="w-11 h-11 rounded-lg object-contain bg-white/5 p-1 border border-secondary" />
+                        <img src={resolvedLogo} alt={`${company} logo`} className="w-11 h-11 rounded-lg object-contain bg-elevated/[0.06] p-1 border border-secondary" />
                     ) : (
                         <div className={`w-11 h-11 rounded-lg bg-gradient-to-br ${accent || 'from-sky-500 to-cyan-400'} flex items-center justify-center text-primary text-lg font-extrabold shadow-md`}>
                             {company[0]}
                         </div>
                     )}
-                    <h3 className="text-xl font-bold text-light-gray group-hover:text-white transition-colors leading-tight">
+                    <h3 className="text-xl font-bold text-light-gray group-hover:text-accent transition-colors leading-tight">
                         {role} <span className="text-accent">@ {company}</span>
                     </h3>
                 </div>
@@ -48,7 +48,12 @@ const ExperienceItem = ({ role, company, logoUrl, accent, period, description, i
 
 const Experience = () => {
     return (
-        <Section id="experience" title="Work Experience">
+        <Section
+            id="experience"
+            title="Work Experience"
+            eyebrow="Where I have worked"
+            intro="Building and releasing software that real teams depend on, from the interface down to the deployment."
+        >
             <div className="max-w-4xl mx-auto">
                 <div className="space-y-2">
                     {EXPERIENCE.map((exp, index) => (

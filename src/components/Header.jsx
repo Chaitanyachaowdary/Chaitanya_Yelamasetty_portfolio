@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import ThemeToggle from './ThemeToggle';
 
 // Reusable component for desktop navigation links
 const NavLink = ({ href, children, active }) => (
@@ -113,6 +114,7 @@ const Header = () => {
                 <span>Search</span>
                 <kbd className="text-[10px] bg-secondary border border-secondary rounded px-1.5 py-0.5">⌘K</kbd>
               </button>
+              <ThemeToggle />
               <a href="#contact" className="px-4 py-2 bg-accent text-primary font-bold rounded-md hover:bg-accent-hover transition-colors duration-300 shadow-md">
                 Contact Me
               </a>
@@ -138,7 +140,7 @@ const Header = () => {
               <SocialIconLink href="https://www.instagram.com/chaitanya_chowdary.317" label="Instagram profile">
                 <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m0 2A3.8 3.8 0 0 0 4 7.8v8.4a3.8 3.8 0 0 0 3.8 3.8h8.4a3.8 3.8 0 0 0 3.8-3.8V7.8A3.8 3.8 0 0 0 16.2 4H7.8m12.9 1.3a1 1 0 1 1-2 0 1 1 0 0 1 2 0M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10m0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" /></svg>
               </SocialIconLink>
-              <SocialIconLink href="https://x.com/Chaitanya154975" label="X (Twitter) profile">
+              <SocialIconLink href="https://x.com/chaitanyatarak9" label="X (Twitter) profile">
                 <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M18.901 1.144h3.762L14.417 9.87l7.545 11.002h-6.24L11.564 12.012l-6.31 8.864H1.385l8.037-11.196L1.082 1.144h7.828l4.914 6.789L18.901 1.144zm-1.666 17.502h2.208L7.697 3.529H5.35L17.235 18.646z" /></svg>
               </SocialIconLink>
               </div>
@@ -146,10 +148,11 @@ const Header = () => {
           </nav>
 
           {/* Mobile Menu Button (Hamburger/Close Icon) */}
-          <div className="lg:hidden">
+          <div className="lg:hidden flex items-center gap-1">
+            <ThemeToggle />
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-light-gray hover:text-accent focus:outline-none"
+              className="inline-flex h-11 w-11 items-center justify-center text-light-gray hover:text-accent focus:outline-none"
               aria-label="Toggle menu"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -208,7 +211,7 @@ const Header = () => {
                 <SocialIconLink href="https://www.instagram.com/chaitanya_chowdary.317" label="Instagram profile">
                   <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.204-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.919-.058-1.265-.07-1.644-.07-4.849 0-3.204.012-3.584.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4s1.791-4 4-4 4 1.79 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" /></svg>
                 </SocialIconLink>
-                <SocialIconLink href="https://x.com/Chaitanya154975" label="X (Twitter) profile">
+                <SocialIconLink href="https://x.com/chaitanyatarak9" label="X (Twitter) profile">
                   <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M18.901 1.144h3.762L14.417 9.87l7.545 11.002h-6.24L11.564 12.012l-6.31 8.864H1.385l8.037-11.196L1.082 1.144h7.828l4.914 6.789L18.901 1.144zm-1.666 17.502h2.208L7.697 3.529H5.35L17.235 18.646z" /></svg>
                 </SocialIconLink>
               </div>

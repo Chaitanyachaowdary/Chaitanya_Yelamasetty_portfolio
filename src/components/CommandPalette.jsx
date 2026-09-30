@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import useOverlayLock from '../lib/useOverlayLock';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const scrollToId = (id) => {
@@ -33,14 +34,15 @@ const COMMANDS = [
   { group: 'Navigate', label: 'Certifications', kind: 'nav', action: () => scrollToId('certifications'), icon: <NavIcon /> },
   { group: 'Navigate', label: 'Education', kind: 'nav', action: () => scrollToId('education'), icon: <NavIcon /> },
   { group: 'Navigate', label: 'Contact', kind: 'nav', action: () => scrollToId('contact'), icon: <NavIcon /> },
-  { group: 'Connect', label: 'Email me', kind: 'link', action: () => { window.location.href = 'mailto:ychaitanya317@gmail.com'; }, icon: <MailIcon /> },
+  { group: 'Connect', label: 'Email me', kind: 'link', action: () => { window.location.href = 'mailto:chaitanyachowdary4e3@gmail.com'; }, icon: <MailIcon /> },
   { group: 'Connect', label: 'GitHub', kind: 'link', action: () => window.open('https://github.com/Chaitanyachaowdary', '_blank'), icon: <LinkIcon /> },
   { group: 'Connect', label: 'LinkedIn', kind: 'link', action: () => window.open('https://www.linkedin.com/in/chaitanya-yelamasetty', '_blank'), icon: <LinkIcon /> },
-  { group: 'Connect', label: 'X (Twitter)', kind: 'link', action: () => window.open('https://x.com/Chaitanya154975', '_blank'), icon: <LinkIcon /> },
+  { group: 'Connect', label: 'X (Twitter)', kind: 'link', action: () => window.open('https://x.com/chaitanyatarak9', '_blank'), icon: <LinkIcon /> },
 ];
 
 const CommandPalette = () => {
   const [open, setOpen] = useState(false);
+  useOverlayLock(open);
   const [query, setQuery] = useState('');
   const [active, setActive] = useState(0);
   const inputRef = useRef(null);
@@ -132,7 +134,7 @@ const CommandPalette = () => {
               <kbd className="hidden sm:block text-[10px] text-medium-gray border border-secondary rounded px-1.5 py-0.5">ESC</kbd>
             </div>
 
-            <div ref={listRef} className="max-h-[320px] overflow-y-auto py-2">
+            <div ref={listRef} data-lenis-prevent className="max-h-[320px] overflow-y-auto py-2">
               {filtered.length === 0 && (
                 <p className="text-center text-medium-gray text-sm py-6">No results</p>
               )}
@@ -141,7 +143,7 @@ const CommandPalette = () => {
                 return (
                   <React.Fragment key={cmd.label}>
                     {showGroup && (
-                      <p className="px-4 pt-3 pb-1 text-[11px] uppercase tracking-wider text-medium-gray/70 font-semibold">{cmd.group}</p>
+                      <p className="px-4 pt-3 pb-1 text-[11px] uppercase tracking-wider text-medium-gray font-semibold">{cmd.group}</p>
                     )}
                     <button
                       data-idx={i}

@@ -7,14 +7,21 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#0b1120", // deepened slate for a premium near-black
-        secondary: "#161e2e",
-        "surface": "#1c2638",
-        accent: "#38bdf8", // Sky 400
-        "accent-hover": "#0ea5e9", // Sky 500
-        "light-gray": "#f1f5f9", // Slate 100
-        "medium-gray": "#94a3b8", // Slate 400
-        dark: "#020617", // Slate 950
+        // Every token resolves to a CSS variable so the whole palette can flip
+        // between themes at runtime. Values live in src/index.css under :root
+        // (dark) and [data-theme="light"].
+        primary: "rgb(var(--c-primary) / <alpha-value>)",
+        secondary: "rgb(var(--c-secondary) / <alpha-value>)",
+        surface: "rgb(var(--c-surface) / <alpha-value>)",
+        accent: "rgb(var(--c-accent) / <alpha-value>)",
+        "accent-hover": "rgb(var(--c-accent-hover) / <alpha-value>)",
+        "light-gray": "rgb(var(--c-text) / <alpha-value>)",
+        "medium-gray": "rgb(var(--c-muted) / <alpha-value>)",
+        dark: "rgb(var(--c-dark) / <alpha-value>)",
+        // Semantic replacements for the hardcoded white/black utilities, which
+        // could not flip: a hairline border and a faint raised fill.
+        line: "rgb(var(--c-line) / <alpha-value>)",
+        elevated: "rgb(var(--c-elevated) / <alpha-value>)",
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
