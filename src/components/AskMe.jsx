@@ -18,6 +18,7 @@ const AskMe = () => {
   const inputRef = useRef(null);
   const bodyRef = useRef(null);
   const recRef = useRef(null);
+  const listenTimer = useRef(null);
   const voiceRepliesRef = useRef(false);
 
   useEffect(() => { voiceRepliesRef.current = voiceReplies; }, [voiceReplies]);
@@ -44,7 +45,13 @@ const AskMe = () => {
 
   // stop voice when the panel closes
   useEffect(() => {
-    if (!open) { stopSpeaking(); try { recRef.current?.stop(); } catch { /* noop */ } setListening(false); setSpeechNote(''); }
+    if (!open) {
+      stopSpeaking();
+      clearTimeout(listenTimer.current);
+      try { recRef.current?.stop(); } catch { /* noop */ }
+      setListening(false);
+      setSpeechNote('');
+    }
   }, [open]);
 
   const startListening = () => {
@@ -68,12 +75,17 @@ const AskMe = () => {
     rec.interimResults = false;
     rec.maxAlternatives = 1;
     rec.onresult = (e) => {
+      clearTimeout(listenTimer.current);
       const transcript = e.results[0][0].transcript;
       setInput(transcript);
       ask(transcript);
     };
-    rec.onend = () => setListening(false);
+    rec.onend = () => {
+      clearTimeout(listenTimer.current);
+      setListening(false);
+    };
     rec.onerror = (e) => {
+      clearTimeout(listenTimer.current);
       setListening(false);
       setSpeechNote(
         e?.error === 'not-allowed' || e?.error === 'service-not-allowed'
@@ -91,6 +103,16 @@ const AskMe = () => {
     try {
       rec.start();
       setListening(true);
+      // Safety stop. Recognition can start cleanly and then simply never fire
+      // onresult or onerror — no microphone, silence, a device that goes away —
+      // which leaves the panel saying "Listening…" with nothing coming. Give it
+      // a bounded window rather than an open one.
+      clearTimeout(listenTimer.current);
+      listenTimer.current = setTimeout(() => {
+        try { rec.stop(); } catch { /* already gone */ }
+        setListening(false);
+        setSpeechNote('No speech detected. Try again, or type your question.');
+      }, 10000);
     } catch {
       setListening(false);
       setSpeechNote('Voice input could not start. Try again, or type your question.');
